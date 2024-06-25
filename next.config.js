@@ -7,5 +7,4 @@ const nextConfig = {
     trailingSlash: true,
   }
   
-  const removeImports = require('next-remove-imports')()
-  module.exports = removeImports(nextConfig)
+  module.exports = nextConfig
