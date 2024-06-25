@@ -61,11 +61,11 @@ const TheScene: React.FC = () => {
             case "coming soon..": ftext = "coming soon..."; break;
             default: ftext = "coming soon"; break;
           }
-          ctx.fillStyle = "#FFFFFF";
-          ctx.fillRect(0,0,canvas.width,canvas.height)
-          ctx.fillStyle = "#000000"
-          ctx.font = "24px Menlo"
-          ctx.fillText(ftext, 30, 135)
+          ctx!.fillStyle = "#FFFFFF";
+          ctx!.fillRect(0,0,canvas.width,canvas.height)
+          ctx!.fillStyle = "#000000"
+          ctx!.font = "24px Menlo"
+          ctx!.fillText(ftext, 30, 135)
           ftexture.needsUpdate = true;
         }, 1000)
 
