@@ -17,7 +17,7 @@ const SIGN_IN_HANDLERS = {
 };
 const SIGN_IN_PROVIDERS = Object.keys(SIGN_IN_HANDLERS);
 
-export const handler = NextAuth({
+const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: 'PaperDog',
