@@ -10,12 +10,12 @@ import OneTool from './OneTool'
 import Wallets from './Wallets'
 import { SendBitcoin } from './SendBitcoin'
 import Footer from './Footer'
-import { signIn, signOut, useSession } from 'next-auth/react'
+//import { signIn, signOut, useSession } from 'next-auth/react'
 import { ManifestoHome } from './ManifestoHome'
 import { Stack } from '@chakra-ui/react'
 
 export default function PaperDog() {
-    const { data: session, status } = useSession()
+    //const { data: session, status } = useSession()
 
     const [btcPrice, setBTCprice] = useState("");
     const [ethPrice, setETHprice] = useState("");

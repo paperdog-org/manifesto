@@ -4,7 +4,7 @@ import { Roboto_Mono } from 'next/font/google'
 
 /*import { Providers } from './providers'*/
 
-import { getServerSession } from "next-auth"
+//import { getServerSession } from "next-auth"
 import { Providers } from "../components/EthereumProvider"
 import SessionProvider from "../components/SessionProvider"
 import { ChakraProvider } from '@chakra-ui/react'
@@ -22,12 +22,12 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession()
+  //const session = await getServerSession()
 
   return (
       <html lang="en">
         <body className={mmono.className}>
-          <SessionProvider session={session}>
+          <SessionProvider >
             <Providers>
               <ChakraProvider>
                 {children}   

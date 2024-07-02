@@ -1,17 +1,17 @@
 'use client'
 import React from 'react'
 import Image from 'next/image'
-import { signIn, signOut, useSession } from 'next-auth/react'
+//import { signIn, signOut, useSession } from 'next-auth/react'
 import { useState } from "react"
 
 
 function Authbutton() {
-    const { data: session } = useSession()
+    //const { data: session } = useSession()
 
     const [goflag, setGoflag] = useState(false);
 
     const handleSignOut = async () => { 
-        signOut();
+        //signOut();
         setGoflag(false);
     }
 
@@ -22,9 +22,9 @@ function Authbutton() {
     try {
       const callbackUrl = '/protected'
       if (username) {
-        signIn('credentials', { username: username, password:password, callbackUrl })
+        //signIn('credentials', { username: username, password:password, callbackUrl })
         console.log('Connected to ' + username) 
-        console.log(session)
+        //console.log(session)
        return
       }
       else {
@@ -42,9 +42,9 @@ function Authbutton() {
         handleLogin()
     }
 
-    
+    //session
     //<code className="font-mono font-bold">WOOF</code>
-    if (session) {
+    if (false) {
         return (
             <>
                 <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
