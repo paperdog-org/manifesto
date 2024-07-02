@@ -51,25 +51,7 @@ export function AccountView() {
     const addresses = {btcaddress: npIV, ethaddress: npII, soladdress: npIII}
 
     const retrieveManifesto = async () => {
-        fetch("../api/manifesto")
-            .then((res) => res.json())
-            .then((res) => {
-                setStart('NEW');
-                setNanifesto(res['Manifesto']); 
-                setNpassWord(res['password']);
-                setNuserName(res['username']);
-                setNanifestoID(res['manifestoID']);
-                setNanifestoIID(res['manifestoIID'])
-                setNanifestoIIID(res['manifestoIIID']);
-                setNanifestoIVD(res['manifestoIVD']);
-                setNpII(res['ethManifesto']);
-                setNpkII(res['ethPManifesto']);
-                setNpIII(res['solManifesto']);
-                setNpkIII(res['solWManifesto']);
-                setNpIV(res['btcManifesto']);
-                setNpkIV(res['btcWManifesto']);
-                setP2status(res['status']);
-            })
+
     };
 
     const changeManifesto0 = async () => {
@@ -196,7 +178,7 @@ export function AccountView() {
                                 <div className="z-10 w-full max-w-xl px-5 xl:px-0">
                                         <div className="mx-auto mt-3 flex items-center justify-center space-x-5 opacity-90">
                                             <button
-                                            className="bg-green-900 group flex max-w-fit items-center justify-center space-x-2 rounded-full border border-blue bg-black px-8 py-4 text-sm text-white transition-colors hover:bg-white hover:text-black"
+                                            className="opacity-30 bg-green-900 group flex max-w-fit items-center justify-center space-x-2 rounded-full border border-blue bg-black px-8 py-4 text-sm text-white transition-colors hover:bg-white hover:text-black"
                                             onClick={retrieveManifesto}
                                             >
                                                 <p> NEW </p>

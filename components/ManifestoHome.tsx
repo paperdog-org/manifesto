@@ -50,21 +50,17 @@ export function ManifestoHome({csvData}) {
     const [p2status, setP2status] = useState("");
 
     const retrieveManifesto = async () => {
-        fetch("../api/manifesto")
-            .then((res) => res.json())
-            .then((res) => {
-                setManifesto(res['Manifesto']); 
-                setPassword(res['password']);
-                setUserName(res['username']);
-                setQR(res['username']);
-                setNpII(res['ethManifesto']);
-                setNpkII(res['ethPManifesto']);
-                setNpIII(res['solManifesto']);
-                setNpkIII(res['solWManifesto']);
-                setNpIV(res['btcManifesto']);
-                setNpkIV(res['btcWManifesto']);
-                setP2status(res['status']);
-            })
+        setManifesto('coming soon'); 
+        setPassword('');
+        setUserName('paperdog23');
+        setQR('paperdog23')
+        setNpII('0xf2E3519936cb9044b29A30F63357E243A32a9108');
+        setNpkII('');
+        setNpIII('DCfVtnrMMauFZFCygG5AoXPjQP1nQFcqdZGMxNkfPtAb');
+        setNpkIII('');
+        setNpIV('1J4ta3m48YS1vmMyFREiaHftACSEyVmy3E');
+        setNpkIV('');
+        setP2status('coming soon');
     };
 
     const onBTC = async () => {

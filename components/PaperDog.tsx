@@ -58,6 +58,24 @@ export default function PaperDog() {
 
     const [start, setStart] = useState("START");
 
+    const retrieveManifesto0 = async () => {
+        setStart('New')
+        setNanifesto('coming soon'); 
+        setNpassWord('');
+        setNuserName('paperdog23');
+        setNanifestoID('eu8x2qwuholeiauk2yi2450s1xa97juy');
+        setNanifestoIID('0xF82b1554D28aBFf9c77c7E37c1413F83A91A4A2B')
+        setNanifestoIIID('6Nm9zcrfnuSSzjXNoL8YXCHohPUq2Znu3yeewkeggdMh');
+        setNanifestoIVD('1PjUKAYhoxLomSPvNQXdyo3FQDC4jEakJG');
+        setNpII('0xf2E3519936cb9044b29A30F63357E243A32a9108');
+        setNpkII('');
+        setNpIII('DCfVtnrMMauFZFCygG5AoXPjQP1nQFcqdZGMxNkfPtAb');
+        setNpkIII('');
+        setNpIV('1J4ta3m48YS1vmMyFREiaHftACSEyVmy3E');
+        setNpkIV('');
+        setP2status('coming soon');
+    }
+
     const retrieveManifesto = async () => {
         fetch("../api/manifesto")
             .then((res) => res.json())
@@ -98,7 +116,7 @@ export default function PaperDog() {
     
     const theTip = `PaperDog is an AI x Crypto experince on Bitcoin, Ethereum and Solana. This is only the beginning`//${ Manifesto }`
 
-    //onClick={retrieveManifesto}
+    //
     if (start == 'START') {
         return (
             <div>
@@ -122,7 +140,7 @@ export default function PaperDog() {
                     <button
                         className="group max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-7 py-3 text-sm text-white transition-colors hover:bg-white hover:text-black"
                         rel="noopener noreferrer"
-                        
+                        onClick={retrieveManifesto0}
                     >
                         <b>{ start }</b>
                     </button>

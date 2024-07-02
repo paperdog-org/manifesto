@@ -32,18 +32,18 @@ export default function Manifesto() {
     };
 
     useEffect(() => {
-        fetch("../api/manifesto")
-            .then((res) => res.json())
-            .then((res) => {
-                setManifesto('paper '+res['Manifesto']+' dog'); 
-                setPassWord(res['password']);
-                setUserName(res['username']);
-                setManifestoID(res['manifestoID']);
-                setManifestoIID(res['manifestoIID'])
-                setManifestoIIID(res['manifestoIIID']);
-                setManifestoIVD(res['manifestoIVD']);
-            }
-                )
+        setManifesto('paper '+'coming soon'+' dog'); 
+        setPassWord('');
+        setUserName('paperdog23');
+        setManifestoID('eu8x2qwuholeiauk2yi2450s1xa97juy');
+        setManifestoIID('0xF82b1554D28aBFf9c77c7E37c1413F83A91A4A2B')
+        setManifestoIIID('6Nm9zcrfnuSSzjXNoL8YXCHohPUq2Znu3yeewkeggdMh');
+        setManifestoIVD('1PjUKAYhoxLomSPvNQXdyo3FQDC4jEakJG');
+        //fetch("../api/manifesto")
+        //    .then((res) => res.json())
+        //    .then((res) => {
+        //    }
+        //        )
     }, [])
     ;
 
