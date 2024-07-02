@@ -1,16 +1,15 @@
 # PaperDog Manifesto
 
-An open source interface for PaperDog AI with protocol access to: 
+An open source interface for PaperDog AI with protocol access to Bitcoin, Ethereum, and Solana. 
 
--- Dexes: decentralized exchanges like Uniswap, Curve, Balancer, and Sushiswap
+-- Dexes: decentralized exchanges like Uniswap, Curve, and Jupiter
 
 -- Lending: deposit and lending providers like Aave, Compound, and Maker
 
--- Liquid Staking: staked ethereum custodians like Lido and Rocket Pool
+-- Liquid Staking: staked custodians like Lido and Rocket Pool
 
 - Website: [paperdog.org](https://paperdog.org/)
 - X: [@PaperDogAI](https://x.com/PaperDogAI)
-- Email: [creator@paperdog.org](mailto:creator@paperdog.org)
 - Docs: Coming Soon
 - Discord: Coming Soon
 - Telegram: Coming soon
