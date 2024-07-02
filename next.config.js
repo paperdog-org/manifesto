@@ -5,7 +5,7 @@ const nextConfig = {
     // output: "standalone", // bulkier but supports dynamic routes & api
     experimental: { esmExternals: true },
     trailingSlash: true,
-    images: { unoptimized: true },
+    
   }
   
   module.exports = nextConfig
