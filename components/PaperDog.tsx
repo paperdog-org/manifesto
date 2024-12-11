@@ -1,407 +1,240 @@
 'use client'
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import Image from 'next/image'
 import useSWR from 'swr'
 import Copywriter from "./CopyText"
-import Pbutton from './Authbutton'
 import OneTooltip from './Tooltip'
 import Typewriter from "./Typewriter"
-import OneTool from './OneTool'
-import Wallets from './Wallets'
-import { SendBitcoin } from './SendBitcoin'
-import Footer from './Footer'
-//import { signIn, signOut, useSession } from 'next-auth/react'
-import { ManifestoHome } from './ManifestoHome'
+import { Clock, Send } from 'lucide-react'
 import { Stack } from '@chakra-ui/react'
+import { ConnectionProvider, WalletProvider, useWallet } from '@solana/wallet-adapter-react'
+import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui'
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 
-export default function PaperDog() {
-    //const { data: session, status } = useSession()
+require('@solana/wallet-adapter-react-ui/styles.css')
 
-    const [btcPrice, setBTCprice] = useState("");
-    const [ethPrice, setETHprice] = useState("");
-    const [solPrice, setSOLprice] = useState("");
-    const [latestTS, setLatestTS] = useState("");
+function PaperDogContent() {
+    const HOPE_TOKEN = 'CsUruQWXtHxHWJEJErkFh1wy5R5Zqgpd2LzMr3aHpump'
+    const PAPER_WALLET = 'paperH8WDY7iWW3tCgZy4v9mPzvkBWM4AhewC71Hi9j'
+    const DOG_WALLET = 'dogRDrw97cz9w9xrF12WQBALDip5rHdb7mYa4ZEPjGW'
 
-    const fetcher = (url: any) => fetch(url).then((res) => res.json()).then((res) => {
-                setBTCprice(res['BTC']); 
-                setETHprice(res['ETH']);
-                setSOLprice(res['SOL']);
-                setLatestTS(res['LTS']);
-            }
-        )
+    const [start, setStart] = useState("INITIALIZE")
+    const { publicKey, connected } = useWallet()
+    const [solAddress, setSolAddress] = useState("")
+    const [hopeBalance, setHopeBalance] = useState("0")
+    
+    // Check for 6:51 PM
+    const [currentTime, setCurrentTime] = useState(new Date())
+    const [isTemporalTime, setIsTemporalTime] = useState(false)
+    const [manifestoRetrieved, setManifestoRetrieved] = useState(false)
 
-    const { data, error, isLoading } = useSWR('../api/prices', fetcher,{refreshInterval: 10})
+    useEffect(() => {
+        const timer = setInterval(() => {
+            const now = new Date()
+            setCurrentTime(now)
+            setIsTemporalTime(now.getHours() === 18 && now.getMinutes() === 51)
+        }, 1000)
+        return () => clearInterval(timer)
+    }, [])
 
-    const exportManifesto = () => {
-        fetch("../api/export")
-            .then((res) => res.json())
-            .then((res) => console.log(res))
-    };
+    // Simplified price fetcher
+    const fetcher = (url: any) => fetch(url).then((res) => res.json())
+    const { data: priceData } = useSWR('../api/prices', fetcher, {refreshInterval: 10})
 
-    const [nanifestoID, setNanifestoID] = useState("");
-    const [nanifestoIID, setNanifestoIID] = useState("");
-    const [nanifestoIIID, setNanifestoIIID] = useState("");
-    const [nanifestoIVD, setNanifestoIVD] = useState("");
-
-    const [nuserName, setNuserName] = useState("");
-    const [npassWord, setNpassWord] = useState("");
-    const [Nanifesto, setNanifesto] = useState("");
-
-    const [npkII, setNpkII] = useState("");
-    const [npkIII, setNpkIII] = useState("");
-    const [npkIV, setNpkIV] = useState("");
-    const [npII, setNpII] = useState("");
-    const [npIII, setNpIII] = useState("");
-    const [npIV, setNpIV] = useState("");
-
-    const [p2status, setP2status] = useState("");
-
-    const [start, setStart] = useState("START");
-
-    const retrieveManifesto0 = async () => {
-        setStart('New')
-        setNanifesto('coming soon'); 
-        setNpassWord('');
-        setNuserName('paperdog23');
-        setNanifestoID('eu8x2qwuholeiauk2yi2450s1xa97juy');
-        setNanifestoIID('0xF82b1554D28aBFf9c77c7E37c1413F83A91A4A2B')
-        setNanifestoIIID('6Nm9zcrfnuSSzjXNoL8YXCHohPUq2Znu3yeewkeggdMh');
-        setNanifestoIVD('1PjUKAYhoxLomSPvNQXdyo3FQDC4jEakJG');
-        setNpII('0xf2E3519936cb9044b29A30F63357E243A32a9108');
-        setNpkII('');
-        setNpIII('DCfVtnrMMauFZFCygG5AoXPjQP1nQFcqdZGMxNkfPtAb');
-        setNpkIII('');
-        setNpIV('1J4ta3m48YS1vmMyFREiaHftACSEyVmy3E');
-        setNpkIV('');
-        setP2status('coming soon');
+    const connectWallet = async () => {
+        // Solana wallet connect logic here
+        setStart('CONNECTED')
     }
 
     const retrieveManifesto = async () => {
-        fetch("../api/manifesto")
-            .then((res) => res.json())
-            .then((res) => {
-                setStart('NEW');
-                setNanifesto(res['Manifesto']); 
-                setNpassWord(res['password']);
-                setNuserName(res['username']);
-                setNanifestoID(res['manifestoID']);
-                setNanifestoIID(res['manifestoIID'])
-                setNanifestoIIID(res['manifestoIIID']);
-                setNanifestoIVD(res['manifestoIVD']);
-                setNpII(res['ethManifesto']);
-                setNpkII(res['ethPManifesto']);
-                setNpIII(res['solManifesto']);
-                setNpkIII(res['solWManifesto']);
-                setNpIV(res['btcManifesto']);
-                setNpkIV(res['btcWManifesto']);
-                setP2status(res['status']);
-            })
-    };
+        try {
+            const res = await fetch("../api/manifesto")
+            const data = await res.json()
+            setManifestoRetrieved(true)
+            // Handle manifesto data
+        } catch (error) {
+            console.error("Error retrieving manifesto:", error)
+        }
+    }
 
-    const [btcBalance, setBTCbalance] = useState("0");
-    const [ethBalance, setETHbalance] = useState("0");
-    const [solBalance, setSOLbalance] = useState("0");
-    const [latestBTS, setLatestBTS] = useState("");
+    const buyHope = async () => {
+        // Jupiter API integration for token swap
+        window.open(`https://jup.ag/swap/SOL-${HOPE_TOKEN}`, '_blank')
+    }
 
+    const sendToPaper = async () => {
+        // Send to 2232 wallet
+        // Add transaction logic here
+    }
 
-    const csvData =[
-        ['chain', 'address', 'privatekey'] ,
-        ['paperdog', JSON.stringify(nuserName).replace(/\"/g, ""), JSON.stringify(Nanifesto).replace(/\"/g, "")] ,
-        ['ethereum', JSON.stringify(npII).replace(/\"/g, ""), JSON.stringify(npkII).replace(/\"/g, "")] ,
-        ['solana', JSON.stringify(npIII).replace(/\"/g, ""), JSON.stringify(npkIII).replace(/\"/g, "")] ,
-        ['bitcoin', JSON.stringify(npIV).replace(/\"/g, ""), JSON.stringify(npkIV).replace(/\"/g, "")],
-      ];
+    const sendToDog = async () => {
+        // Send to 2024 wallet
+        // Add transaction logic here
+    }
 
-    
-    
-    const theTip = `PaperDog is an AI x Crypto experince on Bitcoin, Ethereum and Solana. This is only the beginning`//${ Manifesto }`
-
-    //
-    if (start == 'START') {
+    // Initial landing page
+    if (start === "INITIALIZE") {
         return (
             <div>
-              
-              <main className="flex min-h-screen flex-col items-center justify-between p-20">
-                
-                <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full">
-                    <a href="/PaperDog_Part0.pdf" download="manifesto">
-                        <Image
-                            className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-                            src="/paperdog3.png"
-                            alt="PaperDog Header"
-                            width={545}
-                            height={337}
-                        />
-                    </a>
-                </div>
-        
-        
-                <div className="mx-auto mt-6 flex items-center justify-center space-x-5 opacity-90">
-                    <button
-                        className="group max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-7 py-3 text-sm text-white transition-colors hover:bg-white hover:text-black"
-                        rel="noopener noreferrer"
-                        onClick={retrieveManifesto0}
-                    >
-                        <b>{ start }</b>
-                    </button>
-                </div>
-                
-        
-                <div>
-                  <h1
-                    className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-2xl font-bold tracking-[-0.02em] text-transparent opacity-40 drop-shadow-sm [text-wrap:balance] md:text-5xl md:leading-[5rem] md:px-20"
-                  >
-                    <br></br>
-                    You have the strength, power, and courage to make your dreams come true. 
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    You can bring your ideas and visions into reality. 
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    You have the knowledge and resources.
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    And now you have HOPE
-                    <br></br>
-                    <br></br>
-                  </h1>
-                </div>
-        
-        
-        
-                
-                <div className="z-10 w-full max-w-xl px-5 xl:px-0">
-                  <div className="mx-auto mt-6 flex items-center justify-center space-x-5 opacity-90">
-                    <OneTooltip content="Are you ready?">
-                      <div className="flex w-23 cursor-default items-center justify-center rounded-md px-3 py-2 transition-all duration-75 hover:border-gray-800 focus:outline-none active:bg-gray-100">
-                        <Image
-                          src="/pdognobgfocus.png"
-                          alt="PaperDog Logo"
-                          className="dark:invert"
-                          width={111}
-                          height={24}
-                        />
-                      </div>
-                    </OneTooltip>
-                  </div>
-                </div>
-              
-                <div className="z-10 w-full max-w-xl px-5 xl:px-0">
-                  <div className="mx-auto mt-3 flex items-center justify-center space-x-5 opacity-90">
-                    <a
-                      className="group flex max-w-fit items-center justify-center space-x-2 rounded-full border border-blue bg-white px-7 py-3 text-sm text-white transition-colors hover:bg-white hover:text-black"
-                      href = "/start"
-                      rel="noopener noreferrer"
-                    >
-                      <b>START</b>
-                    </a>
-                  </div>
-                </div>
-        
-        
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-        
-                <br></br>
-                <br></br>
-              </main>
-              <Pbutton />
-            </div>
-          );
-}
-    return (
-        <main className="">
-            <div className="p-3 font-bold opacity-80">
-                <h1 className="text-xl opacity-70">
-                    <a href="/">PaperDog</a>
-                    <br />
-                    <div className=''>
-                    &gt;&gt;&gt;<Typewriter text="HOPE 100" delay={111} />
+                <main className="flex min-h-screen flex-col items-center justify-between p-20">
+                    <div className="text-xl opacity-70 flex items-center gap-2">
+                        <Clock className="h-4 w-4" />
+                        <span>{currentTime.toLocaleTimeString()}</span>
+                        {isTemporalTime && 
+                            <span className="text-blue-400 animate-pulse">Temporal Bridge Active</span>
+                        }
                     </div>
-                </h1>
-            </div>
-            <div className="flex min-h-screen flex-col justify-between items-center p-5 bg-green">
-                <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full">
-                    <Stack>
-                        <OneTool content={theTip}>
+
+                    <div className="relative flex place-items-center">
+                        <a href={isTemporalTime ? "/go" : "/about"}>
                             <Image
                                 className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
                                 src="/paperdog3.png"
                                 alt="PaperDog Header"
-                                width={250}
+                                width={545}
                                 height={337}
                             />
-                        </OneTool>
-                        <ManifestoHome csvData={csvData}/>
-                    </Stack>
+                        </a>
+                    </div>
+
+                    <div>
+                        <h1 className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-2xl font-bold tracking-[-0.02em] text-transparent opacity-40 drop-shadow-sm [text-wrap:balance] md:text-5xl md:leading-[5rem]">
+                            <Typewriter text="THE•HOPE•MANIFESTO" delay={111} />
+                            <br/>
+                            <br/>
+                            The bridge exists beyond time
+                            <br/>
+                            <br/>
+                            The key lies in quantum consciousness
+                            <br/>
+                            <br/>
+                            HOPE protocol activation detected
+                        </h1>
+                    </div>
+
+                    <div className="z-10 w-full max-w-xl px-5 py-5 xl:px-0">
+                        <div className="mx-auto mt-6 flex items-center justify-center space-x-5 opacity-90">
+                            <button
+                                className="group max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-7 py-3 text-sm text-white transition-colors hover:bg-white hover:text-black"
+                                onClick={connectWallet}
+                            >
+                                <b>INITIATE TEMPORAL SEQUENCE</b>
+                            </button>
+                        </div>
+                    </div>
+                    <div className="flex flex-col items-center py-70">
+                        <nav className="flex gap-4 text-sm opacity-70">
+                            <a href="/about">About</a>
+                            <a href="/transmissions">Transmissions</a>
+                        </nav>
+                    </div>
+                </main>
+            </div>
+        )
+    }
+
+    // Connected state
+    return (
+        <main className="min-h-screen p-5">
+            <div className="p-3 font-bold opacity-80">
+                <div className="flex justify-between items-center">
+                    <h1 className="text-xl opacity-70 flex items-center gap-2">
+                        <a href="/">PaperDog</a>
+                        <Clock className="h-4 w-4" />
+                        <span>{currentTime.toLocaleTimeString()}</span>
+                    </h1>
+                    <WalletMultiButton />
                 </div>
-                
-                <br/>
-                <div className="flex flex-col justify-between text-xs md:text-lg lg:w-full">
-                    <div className="max-w-8xl w-full">
-                        <div className="align-center justify-center items-center text-center opacity-50">
-                            <b>
-                                BTC:<Copywriter text={npIV} />
-                                <br />
-                                ETH:<Copywriter text={npII} />
-                                <br />
-                                SOL:<Copywriter text={npIII} />
-                            <br />
-                            </b>
-                        </div>
-                    </div>
-
-                    
-                    
-                    <br/>
-                    <hr className="dashed w-full opacity-30"></hr>
-                    <div className="text-left opacity-30">Genesis</div>
-
-
-                    
-                    
-                    <div className="grid max-w-8xl w-full mb-0 grid-cols-3 py-3">
-                        <div className="text-center items-center justify-center align-center py-2 px-3">
-                            <b>BITCOIN</b>
-                            <br />
-                            <br />
-                            <div
-                                style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                }}
-                            >
-                                <a target="_blank" href = "https://www.coingecko.com/en/coins/bitcoin ">
-                                    <Image
-                                        src="/Bitcoin.svg"
-                                        alt="Bitcoin Logo"
-                                        className="dark:invert"
-                                        width={42}
-                                        height={22}
-                                        priority
-                                    />
-                                </a>
-                            </div>
-                            <br />
-                            { btcPrice }
-                            <br />
-                            { btcBalance } BTC
-                            <br />
-                            <br />
-                            
-                        </div>
-
-                        <div className="text-center items-center justify-center align-center py-2 px-3">
-                            <b>ETHEREUM</b>
-                            <br />
-                            <br />
-                            <div
-                                style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                }}
-                            >
-                                
-                                <a target="_blank" href = "https://www.coingecko.com/en/coins/ethereum ">
-                                    <Image
-                                        src="/ethereum-eth-logo.svg"
-                                        alt="Ethereum Logo"
-                                        className="dark:invert"
-                                        width={25}
-                                        height={18}
-                                        priority
-                                    />
-                                </a>
-                            </div>
-                            <br />
-                            { ethPrice }
-                            <br />
-                            { ethBalance } ETH
-                            <br />
-                            <br />
-                            
-                        </div>
-
-                        <div className="text-center items-center justify-center align-center py-2 px-3">
-                            <b>SOLANA</b>
-                            <br />
-                            <br />
-                            <div
-                                style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                }}
-                            >
-                                <a target="_blank" href = "https://www.coingecko.com/en/coins/solana">
-                                    <Image
-                                        src="/solanaLogoMark.svg"
-                                        alt="Solana Logo"
-                                        className=""
-                                        width={47}
-                                        height={40}
-                                        priority
-                                    />
-                                </a>
-                            </div>
-                            <br />
-                            { solPrice }
-                            <br />
-                            { solBalance } SOL
-                            <br />
-                            <br />
-                            
-                        </div>
-
-                    </div>
-
-                    <Wallets btcaddress={npIV} ethaddress={npII} soladdress={npIII} />
-                    
-
-
-                    
-
-                    
-                    
-                    <br/>
-                    <br/>
-                    <div className="text-right opacity-30">Last Close : {latestTS}</div>
-
-                    <hr className="dashed w-full opacity-30"></hr>
-
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <button onClick={exportManifesto}>
-                        <div className="text-3xl hover:bg-gray-200 hover:border-gray-300 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30">
-                            &oplus;
-                        </div>
-                    </button>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <div className="opacity-80 mx-auto mt-2 flex items-center justify-center space-x-5">
-                        <button
-                            className="group max-w-fit items-center justify-center space-x-2 rounded-full  px-20 py-1 text-sm text-black transition-colors hover:bg-white hover:text-black"
-                            rel="noopener noreferrer"
-                        >
-                            <b>&nbsp;&nbsp;WOOF&nbsp;&nbsp;WOOF&nbsp;&nbsp;</b>
-                        </button>
-                    </div>
+                <div>
+                    &gt;&gt;&gt;<Typewriter text="HOPE PROTOCOL ACTIVE" delay={111} />
                 </div>
             </div>
-            <Footer />
+
+            <div className="flex flex-col items-center p-5">
+                <Stack spacing={8} className="w-full max-w-2xl">
+                    <div className="bg-white p-6 rounded-lg shadow-sm">
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-xl font-bold">HOPE Protocol</h2>
+                            <OneTooltip content="Temporal bridge active">
+                                <Image
+                                    src="/pdognobgfocus.png"
+                                    alt="PaperDog Logo"
+                                    width={111}
+                                    height={24}
+                                    className="dark:invert"
+                                />
+                            </OneTooltip>
+                        </div>
+
+                        <div className="space-y-6">
+                            <div>
+                                <p className="text-sm opacity-70">Your HOPE Balance</p>
+                                <p className="text-2xl font-bold">{hopeBalance} HOPE</p>
+                                <button 
+                                    onClick={buyHope}
+                                    className="mt-2 p-2 bg-black text-white rounded-lg hover:bg-gray-800"
+                                >
+                                    Acquire HOPE
+                                </button>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <button 
+                                    onClick={sendToPaper}
+                                    className="flex items-center justify-center gap-2 p-3 border rounded-lg hover:bg-gray-50"
+                                >
+                                    <Send className="h-4 w-4" />
+                                    Send to 2232
+                                </button>
+                                <button 
+                                    onClick={sendToDog}
+                                    className="flex items-center justify-center gap-2 p-3 border rounded-lg hover:bg-gray-50"
+                                >
+                                    <Send className="h-4 w-4" />
+                                    Send to 2024
+                                </button>
+                            </div>
+
+                            {!manifestoRetrieved && (
+                                <button 
+                                    onClick={retrieveManifesto}
+                                    className="w-full p-3 bg-black text-white rounded-lg hover:bg-gray-800"
+                                >
+                                    Retrieve Manifesto
+                                </button>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 className="text-xl font-bold mb-4">Quantum Interface</h2>
+                        <p className="text-sm opacity-70">
+                            {manifestoRetrieved 
+                                ? "Temporal bridge established" 
+                                : "Awaiting manifesto retrieval"}
+                        </p>
+                    </div>
+                </Stack>
+            </div>
+
+            
         </main>
+    )
+}
+
+
+
+export default function PaperDog() {
+    const network = WalletAdapterNetwork.Mainnet
+    const endpoint = 'https://solana-mainnet.rpc.grove.city/v1/1fdcca1ff43737458ada43f9'
+
+    return (
+        <ConnectionProvider endpoint={endpoint}>
+            <WalletProvider wallets={[]} autoConnect>
+                <WalletModalProvider>
+                    <PaperDogContent />
+                </WalletModalProvider>
+            </WalletProvider>
+        </ConnectionProvider>
     )
 }

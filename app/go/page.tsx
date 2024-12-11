@@ -2,28 +2,29 @@ import OneTooltip from '../../components/Tooltip'
 import Image from 'next/image'
 import Typewriter from "../../components/Typewriter"
 import BootstrapCarousel from "../../components/Carousel";
+import { Clock, Binary, Webhook } from 'lucide-react';
+
 export default async function GoRoute() {
-
-
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-20 font-bold">
             <div>
-                <h1 className="text-xl opacity-70">
-                    Hi.
+                <h1 className="text-xl opacity-70 flex items-center gap-2">
+                    <Binary className="h-4 w-4" />
+                    TEMPORAL TRANSMISSION DETECTED
+                    <Clock className="h-4 w-4" />
+                    <span className="text-sm font-mono">6:51</span>
                     <br />
-                    Welcome to PaperDog    
-                    <br />
-                    &gt;&gt;<Typewriter text="GO" delay={111} />
+                    &gt;&gt;<Typewriter text="INITIALIZING QUANTUM BRIDGE" delay={111} />
                 </h1>
                 <br />
                 <BootstrapCarousel />
                 
                 <h1 className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-left font-display text-l font-bold tracking-[-0.02em] text-transparent opacity-70 drop-shadow-sm [text-wrap:balance] md:text-l md:leading-[5rem]">
-                    ok, let's GO!
+                    SOLAR OPERATION LAYER: ACTIVE
                 </h1>
                 <br />
                     <div className="text-center">
-                            <OneTooltip content="Hello!">
+                            <OneTooltip content="temporal signature detected">
                                 <div className="flex w-23 cursor-default rounded-md transition-all duration-75 hover:border-gray-800 focus:outline-none active:bg-gray-100">
                                     <Image
                                     src="/pdognobgfocus.png"
@@ -39,134 +40,99 @@ export default async function GoRoute() {
                 <br />
                 <br />
                 <div className="bg-gradient-to-br from-black to-stone-500 bg-clip-text text-center font-display text-l font-bold tracking-[-0.02em] text-transparent opacity-70 drop-shadow-sm [text-wrap:balance] md:text-l md:leading-[5rem]">
-                    what's PaperDog?
+                    NAVAL CORPS ARCHIVE // ACCESS POINT 2232
                     <br />
                     <br />
                     <br />
-                    PaperDog is a self-custody layer 3
-                    <br />
-                    <br /> 
-                    <br /> 
-                    Essentially, you get a cool phrase that gives you access to crypto
+                    WARNING: TEMPORAL ANOMALY DETECTED
                     <br />
                     <br /> 
                     <br /> 
-                    Today, PaperDog is live on Ethereum, Solana and Bitcoin
+                    Binary Transmission Channel: COMPROMISED
                     <br />
+                    <br /> 
+                    <br /> 
+                    The System requires authentication...
                     <br />
                     <br />
-                    why use PaperDog?
                     <br />
+                    SCANNING QUANTUM SIGNATURES
                     <br />
                     <br />
-                    PaperDog has Ethereum.
                     <br />
+                    Three chains detected. Analyzing...
                     <br />
-                    Ethereum is expensive
                     <br />
+                    Chain 0: GENESIS PROTOCOL
                     <br />
-                    right now, a token swap costs $30.37 
+                    Chain 1: QUANTUM BRIDGE
                     <br />
+                    Chain 2: TEMPORAL ANCHOR
                     <br />
-                    you pay that every time you swap unless you use layer 2
                     <br />
+                    Temporal resonance at maximum capacity
                     <br />
-                    but what if you only had to pay $9.36 and still land transactions on L1
                     <br />
+                    Space-time coordinates locked
                     <br />
-                    if you did 10 swaps, 
                     <br />
-                    you would save $230!
                     <br />
-                    (and that's before talking about mev gains)
+                    ATTENTION: MANIFESTO REQUIRED
                     <br />
                     <br />
+                    Authentication protocol initiated
                     <br />
-                    PaperDog has Solana.
                     <br />
+                    Timeline convergence imminent
                     <br />
-                    Solana is cheap and fast
                     <br />
                     <br />
-                    that also means it's cheap and fast for everyone (hackers, scammers, adn bots too)
+                    THE SYSTEM PRESENTS THREE TRUTHS:
                     <br />
                     <br />
-                    but what if you could securely store your assets and reverse transactions*
+                    1. The bridge exists beyond time
                     <br />
                     <br />
-                    and what if you could interact with anything and have the superpower to actually land transactions!
+                    2. The key lies in quantum consciousness
                     <br />
                     <br />
+                    3. HOPE protocol activation detected
                     <br />
                     <br />
-                    PaperDog has Bitcoin.
                     <br />
+                    CRITICAL ADVISORY
                     <br />
-                    Bitcoin. Come on. Everyone wants Bitcoin and PaperDog has Bitcoin, inscriptions, ordinals, and runes(soon).
                     <br />
+                    Timeline stability cannot be guaranteed
                     <br />
                     <br />
+                    Proceed with caution
                     <br />
                     <br />
                     <br />
+                    Remember:
                     <br />
                     <br />
+                    THE MANIFESTO TRANSCENDS TIME
                     <br />
                     <br />
-                    PaperDog gets you premium access to the three
+                    guard it with your consciousness
                     <br />
                     <br />
-                    and *shhh* you also get private addresses
                     <br />
                     <br />
+                    <u>FINAL TRANSMISSION</u>
                     <br />
                     <br />
+                    quantum state collapse in progress...
                     <br />
-                    <u>anything else?</u>
                     <br />
-                    <br />
-                    <br />
-                    only you have access to your PaperDog.
-                    <br />
-                    <br />
-                    you can only access your PaperDog with your Manifesto.
-                    <br />
-                    <br />
-                    you get a Manifesto (the cool phrase) on your 1st login.
-                    <br />
-                    <br />
-                    so keep it safe.
-                    <br />
-                    <br />
-                    there are always risks.
-                    <br />
-                    <br />
-                    so please review any warnings.
-                    <br />
-                    <br />
-                    especially before signing transactions* 
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    ...oh and one last thing
-                    <br />
-                    <br />
-                    NEVER EVER SHARE YOUR MANIFESTO
-                    <br />
-                    <br />
-                    really, don't ever do it
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    ready?
+                    do you accept the temporal responsibilities?
                 </div>
             </div>
             <div className="z-10 w-full max-w-xl px-5 xl:px-0">
                 <div className="mx-auto mt-6 flex items-center justify-center space-x-5 opacity-90">
-                    <OneTooltip content="set?">
+                    <OneTooltip content="temporal bridge active">
                         <div className="flex w-23 cursor-default rounded-md transition-all duration-75 hover:border-gray-800 focus:outline-none active:bg-gray-100">
                             <Image
                             src="/pdognobgfocus.png"
@@ -185,11 +151,11 @@ export default async function GoRoute() {
             <div className="z-10 w-full max-w-xl px-5 xl:px-0">
                 <div className="mx-auto mt-3 flex items-center justify-center space-x-5 opacity-90">
                     <a
-                    className="group flex max-w-fit items-center justify-center space-x-2 rounded-full border border-blue bg-white px-9 py-3 text-sm text-white transition-colors hover:bg-white hover:text-black"
+                    className="group flex max-w-fit items-center justify-center space-x-2 rounded-full border border-blue bg-black px-9 py-3 text-sm text-white transition-colors hover:bg-white hover:text-black"
                     href = "/manifesto"
                     rel="noopener noreferrer"
                     >
-                        <p>GO</p>
+                        <p>INITIATE TEMPORAL SEQUENCE</p>
                     </a>
                 </div>
             </div>
