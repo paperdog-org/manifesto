@@ -153,10 +153,10 @@ function PaperDogContent() {
                 <div
                   key={idx}
                   className={`p-3 rounded-lg ${
-                    msg.timeline === '2024' ? 'bg-blue-900 ml-8' : 'bg-purple-900 mr-8'
+                    msg?.timeline === '2024' ? 'bg-blue-900 ml-8' : 'bg-purple-900 mr-8'
                   }`}
                 >
-                  {msg.content}
+                  {msg?.content}
                 </div>
               ))}
             </div>
