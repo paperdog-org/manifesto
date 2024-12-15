@@ -13,7 +13,10 @@ import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
-
+interface ChatMessage {
+  timeline: string;
+  content: string;
+}
 
 function PaperDogContent() {
     const HOPE_TOKEN = 'CsUruQWXtHxHWJEJErkFh1wy5R5Zqgpd2LzMr3aHpump'
@@ -131,8 +134,8 @@ function PaperDogContent() {
         );
       };
 
-    const TemporalBridge = () => {
-        const [chatHistory, setChatHistory] = useState([]);
+      const TemporalBridge = () => {
+        const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
         const [message, setMessage] = useState('');
         const [timeline, setTimeline] = useState('2024');
         
@@ -153,10 +156,10 @@ function PaperDogContent() {
                 <div
                   key={idx}
                   className={`p-3 rounded-lg ${
-                    msg?.timeline === '2024' ? 'bg-blue-900 ml-8' : 'bg-purple-900 mr-8'
+                    msg.timeline === '2024' ? 'bg-blue-900 ml-8' : 'bg-purple-900 mr-8'
                   }`}
                 >
-                  {msg?.content}
+                  {msg.content}
                 </div>
               ))}
             </div>
@@ -171,8 +174,10 @@ function PaperDogContent() {
               />
               <button
                 onClick={() => {
-                  setChatHistory([...chatHistory, { timeline, content: message }]);
-                  setMessage('');
+                  if (message.trim()) {
+                    setChatHistory([...chatHistory, { timeline, content: message }]);
+                    setMessage('');
+                  }
                 }}
                 className="bg-blue-500 px-4 py-2 rounded-lg"
               >
@@ -181,7 +186,7 @@ function PaperDogContent() {
             </div>
           </div>
         );
-      };
+    };
 
     // Initial landing page
     if (start === "INITIALIZE") {

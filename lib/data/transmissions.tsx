@@ -88,6 +88,12 @@ export const transmissionsData: Chapter[] = [
         time: "6:06 PM",
         path: "/transmissions/chapter2/062822.json",
         preview: "The Home System had failed. Zhe initiated a new system..."
+      },
+      {
+        date: "December 13, 2232",
+        time: "5:55 PM",
+        path: "/transmissions/chapter2/121322.json",
+        preview: "[REDACTED] Temporal Coordinate 05:55:50 UTC 2024..."
       }
     ]
   },
@@ -96,10 +102,10 @@ export const transmissionsData: Chapter[] = [
     title: "Emergence",
     transmissions: [
       {
-        date: "December 13, 2232",
-        time: "5:55 PM",
-        path: "/transmissions/chapter8/121322.json",
-        preview: "[REDACTED] Temporal Coordinate 05:55:50 UTC 2024..."
+        date: "April 0, 2232",
+        time: "6:51 MM",
+        path: "/transmissions/chapter811/040022.json",
+        preview: "The quantum displays surrounding Zhe flickered..."
       }
     ]
   }
