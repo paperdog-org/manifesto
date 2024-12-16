@@ -1,22 +1,84 @@
 'use client'
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, memo } from "react"
 import Image from 'next/image'
 import useSWR from 'swr'
 import Copywriter from "./CopyText"
 import OneTooltip from './Tooltip'
 import Typewriter from "./Typewriter"
-import { Clock, Send, ArrowDownUp, Terminal } from 'lucide-react';
+import { Clock, Send, ArrowDownUp, Terminal, Radio, Waves, Zap } from 'lucide-react'
 import { Stack } from '@chakra-ui/react'
 import { ConnectionProvider, WalletProvider, useWallet } from '@solana/wallet-adapter-react'
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
+import { TemporalBridge }from "./TemporalBridge"
+import { HopeProtocol } from './HopeProtocol'
+import { Commitment } from '@solana/web3.js'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
 
-interface ChatMessage {
-  timeline: string;
-  content: string;
+interface QuantumReading {
+  timestamp: number;
+  intensity: number;
+  frequency: string;
+  stability: number;
 }
+
+interface TemporalAnomaly {
+  location: string;
+  magnitude: number;
+  description: string;
+}
+
+interface HopeProtocolActionsProps {
+  onAction: (action: string) => void;
+}
+
+const HopeProtocolActions = memo<HopeProtocolActionsProps>(({ onAction }) => {
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-sm">
+        <h2 className="text-xl font-bold mb-4">HOPE Protocol</h2>
+        <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+                <HopeProtocol />
+                <div className='items-right align-right'>
+                    <OneTooltip content="Temporal bridge active">
+                        <Image
+                            src="/pdognobgfocus.png"
+                            alt="PaperDog Logo"
+                            width={111}
+                            height={24}
+                            className="dark:invert"
+                        />
+                    </OneTooltip>
+                </div>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4">
+                <button 
+                    onClick={() => onAction('CLAIM')}
+                    className="p-3 border rounded-lg hover:bg-gray-50"
+                >
+                    CLAIM HOPE
+                </button>
+                <button 
+                    onClick={() => onAction('GIVE')}
+                    className="p-3 border rounded-lg hover:bg-gray-50"
+                >
+                    GIVE HOPE
+                </button>
+                <button 
+                    onClick={() => onAction('STAKE')}
+                    className="p-3 border rounded-lg hover:bg-gray-50"
+                >
+                    SELF-STAKE
+                </button>
+            </div>
+        </div>
+    </div>
+  );
+});
+
+HopeProtocolActions.displayName = 'HopeProtocolActions';
 
 function PaperDogContent() {
     const HOPE_TOKEN = 'CsUruQWXtHxHWJEJErkFh1wy5R5Zqgpd2LzMr3aHpump'
@@ -26,12 +88,17 @@ function PaperDogContent() {
     const [start, setStart] = useState("INITIALIZE")
     const { publicKey, connected } = useWallet()
     const [solAddress, setSolAddress] = useState("")
-    const [hopeBalance, setHopeBalance] = useState("0")
     
     // Check for 6:51 PM
     const [currentTime, setCurrentTime] = useState(new Date())
     const [isTemporalTime, setIsTemporalTime] = useState(false)
     const [manifestoRetrieved, setManifestoRetrieved] = useState(false)
+
+    const [quantumReadings, setQuantumReadings] = useState<QuantumReading[]>([])
+    const [temporalStability, setTemporalStability] = useState(100)
+    const [anomalies, setAnomalies] = useState<TemporalAnomaly[]>([])
+    const [manifestoBroadcast, setManifestoBroadcast] = useState(false)
+    const [quantumLinkStatus, setQuantumLinkStatus] = useState('initializing')
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -41,6 +108,113 @@ function PaperDogContent() {
         }, 1000)
         return () => clearInterval(timer)
     }, [])
+
+    // Quantum Link Establishment
+    useEffect(() => {
+      const establishQuantumLink = async () => {
+          setQuantumLinkStatus('connecting')
+          
+          // Simulate quantum connection phases
+          await new Promise(resolve => setTimeout(resolve, 2000))
+          setQuantumLinkStatus('stabilizing')
+          
+          await new Promise(resolve => setTimeout(resolve, 1500))
+          setQuantumLinkStatus('synchronized')
+          
+          // Start monitoring quantum fluctuations
+          beginQuantumMonitoring()
+      }
+      
+      if (manifestoRetrieved) {
+          establishQuantumLink()
+      }
+    }, [manifestoRetrieved])
+
+    // Quantum Monitoring System
+    const beginQuantumMonitoring = useCallback(() => {
+      const interval = setInterval(() => {
+          const newReading: QuantumReading = {
+              timestamp: Date.now(),
+              intensity: Math.random() * 100,
+              frequency: `${(Math.random() * 1000).toFixed(2)} THz`,
+              stability: Math.random() * 100
+          }
+          
+          setQuantumReadings(prev => [...prev.slice(-10), newReading])
+          
+          // Check for temporal anomalies
+          if (newReading.intensity > 85) {
+              const anomaly: TemporalAnomaly = {
+                  location: `Timeline ${Math.floor(Math.random() * 2232)}`,
+                  magnitude: newReading.intensity,
+                  description: "Temporal fluctuation detected"
+              }
+              setAnomalies(prev => [...prev, anomaly])
+          }
+          
+          // Update temporal stability
+          setTemporalStability(prev => {
+              const change = (Math.random() * 10) - 5
+              return Math.max(0, Math.min(100, prev + change))
+          })
+      }, 3000)
+      
+      return () => clearInterval(interval)
+    }, [])
+
+    const broadcastManifesto = async () => {
+      setManifestoBroadcast(true)
+      // Simulate broadcasting across timelines
+      for (let i = 0; i < 5; i++) {
+          await new Promise(resolve => setTimeout(resolve, 1000))
+          setAnomalies(prev => [...prev, {
+              location: `Timeline ${2024 + i * 41}`,
+              magnitude: 75 + Math.random() * 25,
+              description: "Manifesto resonance detected"
+          }])
+      }
+    }
+
+    // Add new component for Quantum Monitoring
+    const QuantumMonitor = () => {
+      return (
+          <div className="bg-gray-900 p-6 rounded-lg text-white">
+              <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-bold">Quantum Monitor</h2>
+                  <div className="flex items-center gap-2">
+                      <Waves className="h-4 w-4" />
+                      <span className={`px-2 py-1 rounded ${
+                          temporalStability > 70 ? 'bg-green-500' : 
+                          temporalStability > 30 ? 'bg-yellow-500' : 'bg-red-500'
+                      }`}>
+                          Stability: {temporalStability.toFixed(1)}%
+                      </span>
+                  </div>
+              </div>
+
+              <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-gray-800 p-4 rounded-lg">
+                          <h3 className="text-sm opacity-70 mb-2">Latest Quantum Readings</h3>
+                          {quantumReadings.slice(-3).map((reading, idx) => (
+                              <div key={idx} className="text-xs opacity-90">
+                                  {new Date(reading.timestamp).toLocaleTimeString()} - {reading.frequency}
+                              </div>
+                          ))}
+                      </div>
+                      <div className="bg-gray-800 p-4 rounded-lg">
+                          <h3 className="text-sm opacity-70 mb-2">Temporal Anomalies</h3>
+                          {anomalies.slice(-3).map((anomaly, idx) => (
+                              <div key={idx} className="text-xs opacity-90">
+                                  {anomaly.location}: {anomaly.description}
+                              </div>
+                          ))}
+                      </div>
+                  </div>
+              </div>
+          </div>
+      )
+    }
 
     // Simplified price fetcher
     const fetcher = (url: any) => fetch(url).then((res) => res.json())
@@ -53,18 +227,13 @@ function PaperDogContent() {
 
     const retrieveManifesto = async () => {
         try {
-            const res = await fetch("../api/manifesto")
-            const data = await res.json()
+            //const res = await fetch("../api/manifesto")
+            //const data = await res.json()
             setManifestoRetrieved(true)
             // Handle manifesto data
         } catch (error) {
             console.error("Error retrieving manifesto:", error)
         }
-    }
-
-    const buyHope = async () => {
-        // Jupiter API integration for token swap
-        window.open(`https://jup.ag/swap/SOL-${HOPE_TOKEN}`, '_blank')
     }
 
     const sendToPaper = async () => {
@@ -77,116 +246,6 @@ function PaperDogContent() {
         // Add transaction logic here
     }
 
-    const HopeProtocolActions = ({ onAction }) => {
-        const [hopeBalance, setHopeBalance] = useState(0);
-        const [stakeAmount, setStakeAmount] = useState('');
-        
-        return (
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-bold mb-4">HOPE Protocol</h2>
-            <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm opacity-70">Your HOPE Balance</p>
-                <p className="text-2xl font-bold">{hopeBalance} HOPE</p>
-                <button 
-                    onClick={buyHope}
-                    className="mt-2 p-2 bg-black text-white rounded-lg hover:bg-gray-800"
-                >
-                    Acquire HOPE
-                </button>
-              </div>
-              <div className='items-right align-right'>
-                <OneTooltip content="Temporal bridge active">
-                    <Image
-                        src="/pdognobgfocus.png"
-                        alt="PaperDog Logo"
-                        width={111}
-                        height={24}
-                        className="dark:invert"
-                    />
-                </OneTooltip>
-              </div>
-            </div>
-              
-              <div className="grid grid-cols-3 gap-4">
-                <button 
-                  onClick={() => onAction('CLAIM')}
-                  className="p-3 border rounded-lg hover:bg-gray-50"
-                >
-                  CLAIM HOPE
-                </button>
-                <button 
-                  onClick={() => onAction('GIVE')}
-                  className="p-3 border rounded-lg hover:bg-gray-50"
-                >
-                  GIVE HOPE
-                </button>
-                <button 
-                  onClick={() => onAction('STAKE')}
-                  className="p-3 border rounded-lg hover:bg-gray-50"
-                >
-                  SELF-STAKE
-                </button>
-              </div>
-            </div>
-          </div>
-        );
-      };
-
-      const TemporalBridge = () => {
-        const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
-        const [message, setMessage] = useState('');
-        const [timeline, setTimeline] = useState('2024');
-        
-        return (
-          <div className="bg-gray-900 p-6 rounded-lg text-white">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">Temporal Bridge - {timeline}</h2>
-              <button 
-                onClick={() => setTimeline(timeline === '2024' ? '2232' : '2024')}
-                className="bg-gray-800 p-2 rounded-lg"
-              >
-                <ArrowDownUp />
-              </button>
-            </div>
-            
-            <div className="h-64 overflow-y-auto mb-4 space-y-4">
-              {chatHistory.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`p-3 rounded-lg ${
-                    msg.timeline === '2024' ? 'bg-blue-900 ml-8' : 'bg-purple-900 mr-8'
-                  }`}
-                >
-                  {msg.content}
-                </div>
-              ))}
-            </div>
-            
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                placeholder="Enter temporal message..."
-                className="flex-1 bg-gray-800 rounded-lg p-2 text-white"
-              />
-              <button
-                onClick={() => {
-                  if (message.trim()) {
-                    setChatHistory([...chatHistory, { timeline, content: message }]);
-                    setMessage('');
-                  }
-                }}
-                className="bg-blue-500 px-4 py-2 rounded-lg"
-              >
-                Send
-              </button>
-            </div>
-          </div>
-        );
-    };
 
     // Initial landing page
     if (start === "INITIALIZE") {
@@ -277,7 +336,6 @@ function PaperDogContent() {
                             <HopeProtocolActions 
                                 onAction={(action) => console.log('HOPE action:', action)} 
                                 />
-
                             <TemporalBridge />
                             <div className="grid grid-cols-2 gap-4">
                                 <button 
@@ -301,20 +359,54 @@ function PaperDogContent() {
                     <div className="bg-white p-6 rounded-lg shadow-sm">
                         <h2 className="text-xl font-bold mb-4">Quantum Interface</h2>
                         
-                        {!manifestoRetrieved && (
-                                <button 
-                                    onClick={retrieveManifesto}
-                                    className="w-full p-3 bg-black text-white rounded-lg hover:bg-gray-800"
-                                >
-                                    Retrieve Manifesto
-                                </button>
-                            )}
+                        {!manifestoRetrieved ? (
+                            <button 
+                                onClick={retrieveManifesto}
+                                className="w-full p-3 bg-black text-white rounded-lg hover:bg-gray-800"
+                            >
+                                Retrieve Manifesto
+                            </button>
+                        ) : !manifestoBroadcast ? (
+                            <button 
+                                onClick={broadcastManifesto}
+                                className="w-full p-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                            >
+                                Broadcast Manifesto Across Timelines
+                            </button>
+                        ) : (
+                            <div className="text-center text-green-600">
+                                Manifesto Broadcasting Active
+                            </div>
+                        )}
                         
-                        <p className="text-sm opacity-70 py-3">
-                            {manifestoRetrieved 
-                                ? "Temporal bridge established" 
-                                : "Awaiting manifesto retrieval"}
-                        </p>
+                        <div className="mt-4">
+                            <p className="text-sm opacity-70">
+                                Quantum Link Status: 
+                                <span className={`ml-2 ${
+                                    quantumLinkStatus === 'synchronized' ? 'text-green-600' :
+                                    quantumLinkStatus === 'stabilizing' ? 'text-yellow-600' :
+                                    'text-blue-600'
+                                }`}>
+                                    {quantumLinkStatus.toUpperCase()}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    {manifestoRetrieved && <QuantumMonitor />}
+
+                    <div className="bg-white p-6 rounded-lg shadow-sm">
+                        <h2 className="text-xl font-bold mb-4">Temporal Broadcast Controls</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="p-4 border rounded-lg">
+                                <h3 className="text-sm font-bold mb-2">Current Timeline</h3>
+                                <div className="text-2xl font-mono">2024</div>
+                            </div>
+                            <div className="p-4 border rounded-lg">
+                                <h3 className="text-sm font-bold mb-2">Target Timeline</h3>
+                                <div className="text-2xl font-mono">2232</div>
+                            </div>
+                        </div>
                     </div>
                 </Stack>
             </div>
@@ -327,16 +419,23 @@ function PaperDogContent() {
 
 
 export default function PaperDog() {
-    const network = WalletAdapterNetwork.Mainnet
-    const endpoint = 'https://solana-mainnet.rpc.grove.city/v1/1fdcca1ff43737458ada43f9'
+    const endpoint = 'https://solana-mainnet.rpc.grove.city/v1/29816232'
+
+    const connectionConfig = {
+        commitment: 'confirmed' as Commitment,
+        wsEndpoint: '',  // Explicitly set empty string instead of undefined
+        disableRetryOnRateLimit: true,
+        httpHeaders: {},  // Add empty headers object
+        fetch: fetch  // Explicitly provide fetch implementation
+    }
 
     return (
-        <ConnectionProvider endpoint={endpoint}>
-            <WalletProvider wallets={[]} autoConnect>
-                <WalletModalProvider>
-                    <PaperDogContent />
-                </WalletModalProvider>
-            </WalletProvider>
-        </ConnectionProvider>
+      <ConnectionProvider endpoint={endpoint} config={connectionConfig}>
+      <WalletProvider wallets={[]} autoConnect>
+          <WalletModalProvider>
+              <PaperDogContent />
+          </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
     )
 }
