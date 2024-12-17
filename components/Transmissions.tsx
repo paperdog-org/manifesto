@@ -1,9 +1,13 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import Typewriter from "../../components/Typewriter";
-import { Monitor, Clock, ChevronRight } from 'lucide-react';
-import { transmissionsData } from '../../lib/data/transmissions';
-import { type Chapter, type Transmission, type TransmissionContent } from '../../lib/types/transmissions'
+import Typewriter from "./Typewriter";
+import { Monitor, Clock, ChevronRight, X } from 'lucide-react';
+import { transmissionsData } from '../lib/data/transmissions';
+import { type Chapter, type Transmission, type TransmissionContent } from '../lib/types/transmissions'
+
+interface TransmissionsProps {
+    onClose?: () => void;
+  }  
 
 const TransmissionViewer = ({ content }: { content: TransmissionContent | null }) => {
   const [displayedLines, setDisplayedLines] = useState<number>(0);
@@ -86,7 +90,7 @@ const TransmissionTab = ({
   );
 };
 
-const TransmissionsRoute = () => {
+const Transmissions: React.FC<TransmissionsProps> = ({ onClose }) => {
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
   const [showChapter8, setShowChapter8] = useState(false);
   const [selectedTransmission, setSelectedTransmission] = useState<Transmission | null>(null);
@@ -142,10 +146,18 @@ const TransmissionsRoute = () => {
             &oplus;
             <span>{currentTime.toLocaleTimeString()}</span>
             &oplus;
-            <div className="mt-2">
-              <Typewriter text="Transmissions" delay={111} />
-            </div>
           </h1>
+          {onClose && (
+              <button 
+                onClick={onClose}
+                className="p-2 hover:bg-gray-800 rounded-full"
+              >
+                <X size={20} className="text-gray-400 hover:text-white" />
+              </button>
+            )}
+            <div className="mt-2">
+                <Typewriter text="Transmissions" delay={111} />
+            </div>
           
 
           <div className="space-y-6 mt-8">
@@ -201,4 +213,4 @@ const TransmissionsRoute = () => {
   );
 };
 
-export default TransmissionsRoute;
+export default Transmissions;

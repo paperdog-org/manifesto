@@ -91,11 +91,17 @@ export const TemporalBridge = () => {
         setTimeout(() => setBridgeStatus('active'), 4000);
       }
     };
+
+    const sendToPaper = async () => {
+      }
+
+    const sendToDog = async () => {
+    }
   
     return (
       <div className="bg-gray-900 p-6 rounded-lg text-white">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Temporal Bridge - {timeline}</h2>
+          <h2 className="text-xl font-bold">{timeline} SpaceTime</h2>
           <div className="flex items-center gap-4">
             <div className={`px-3 py-1 rounded-full text-sm ${
               bridgeStatus === 'active' ? 'bg-green-500' :
@@ -196,6 +202,23 @@ export const TemporalBridge = () => {
             <div className="opacity-70 mb-1">Temporal Echoes</div>
             <div className="font-mono">{temporalEcho.length}</div>
           </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 py-8">
+            <button 
+                onClick={sendToPaper}
+                className="flex items-center justify-center gap-2 p-3 border rounded-lg hover:bg-gray-50"
+            >
+                <Send className="h-4 w-4" />
+                Send to 2232
+            </button>
+            <button 
+                onClick={sendToDog}
+                className="flex items-center justify-center gap-2 p-3 border rounded-lg hover:bg-gray-50"
+            >
+                <Send className="h-4 w-4" />
+                Send to 2024
+            </button>
         </div>
       </div>
     );

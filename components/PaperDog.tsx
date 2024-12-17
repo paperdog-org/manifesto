@@ -1,17 +1,17 @@
 'use client'
-import { useState, useEffect, useCallback, memo } from "react"
+import { useState, useEffect, useCallback, memo, useRef } from "react"
 import Image from 'next/image'
-import useSWR from 'swr'
-import Copywriter from "./CopyText"
+import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion'
 import OneTooltip from './Tooltip'
 import Typewriter from "./Typewriter"
-import { Clock, Send, ArrowDownUp, Terminal, Radio, Waves, Zap } from 'lucide-react'
-import { Stack } from '@chakra-ui/react'
+import { Clock, Send, MessageCircle, X, Radio, Waves, Zap } from 'lucide-react'
 import { ConnectionProvider, WalletProvider, useWallet } from '@solana/wallet-adapter-react'
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui'
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { TemporalBridge }from "./TemporalBridge"
 import { HopeProtocol } from './HopeProtocol'
+import Transmissions from './Transmissions';
+import { PaperDogChat } from './PaperDogChat';
 import { Commitment } from '@solana/web3.js'
 
 require('@solana/wallet-adapter-react-ui/styles.css')
@@ -29,9 +29,75 @@ interface TemporalAnomaly {
   description: string;
 }
 
+interface ChatMessage {
+    id: string;
+    role: 'user' | 'assistant';
+    content: string;
+    timestamp: number;
+  }
+
+const QuantumBackground = () => {
+    return (
+        <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-gray-900 to-black" />
+        <div className="absolute inset-0 opacity-20">
+            <div className="h-full w-full bg-[linear-gradient(to_right,#132a3a_1px,transparent_1px),linear-gradient(to_bottom,#132a3a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+        </div>
+        </div>
+    );
+};
+
+const QuantumParticles = () => {
+    const particles = Array.from({ length: 50 }).map((_, i) => ({
+        id: i,
+        initialX: Math.random() * 100,
+        initialY: Math.random() * 100,
+    }));
+
+    return (
+        <div className="fixed inset-0 pointer-events-none">
+        {particles.map(particle => (
+            <motion.div
+            key={particle.id}
+            className="absolute w-1 h-1 bg-blue-400/20 rounded-full"
+            initial={{ x: `${particle.initialX}%`, y: `${particle.initialY}%` }}
+            animate={{
+                x: [`${particle.initialX}%`, `${particle.initialX + (Math.random() - 0.5) * 10}%`],
+                y: [`${particle.initialY}%`, `${particle.initialY + (Math.random() - 0.5) * 10}%`],
+                opacity: [0.2, 0.5, 0.2],
+            }}
+            transition={{
+                duration: 3 + Math.random() * 2,
+                repeat: Infinity,
+                ease: "linear"
+            }}
+            />
+        ))}
+        </div>
+    );
+};
+
+  
+const ControlPanel = ({ children, title }: { children: React.ReactNode; title: string }) => {
+    return (
+      <div className="relative bg-gradient-to-b from-gray-900 to-gray-800 rounded-lg border border-gray-700 shadow-lg overflow-hidden">
+        <div className="absolute inset-0 bg-grid-white/[0.02]" />
+        <div className="relative p-6">
+          <h2 className="text-lg font-bold text-gray-200 mb-6"> 
+            {title}
+          </h2>
+          <div className="space-y-6">
+            {children}
+          </div>
+        </div>
+        <div className="absolute inset-0 pointer-events-none border border-gray-600/20 rounded-lg" />
+      </div>
+    );
+};
+
 interface HopeProtocolActionsProps {
-  onAction: (action: string) => void;
-}
+    onAction: (action: string) => void;
+  }
 
 const HopeProtocolActions = memo<HopeProtocolActionsProps>(({ onAction }) => {
   return (
@@ -81,10 +147,6 @@ const HopeProtocolActions = memo<HopeProtocolActionsProps>(({ onAction }) => {
 HopeProtocolActions.displayName = 'HopeProtocolActions';
 
 function PaperDogContent() {
-    const HOPE_TOKEN = 'CsUruQWXtHxHWJEJErkFh1wy5R5Zqgpd2LzMr3aHpump'
-    const PAPER_WALLET = 'paperH8WDY7iWW3tCgZy4v9mPzvkBWM4AhewC71Hi9j'
-    const DOG_WALLET = 'dogRDrw97cz9w9xrF12WQBALDip5rHdb7mYa4ZEPjGW'
-
     const [start, setStart] = useState("INITIALIZE")
     const { publicKey, connected } = useWallet()
     const [solAddress, setSolAddress] = useState("")
@@ -94,11 +156,17 @@ function PaperDogContent() {
     const [isTemporalTime, setIsTemporalTime] = useState(false)
     const [manifestoRetrieved, setManifestoRetrieved] = useState(false)
 
+    const [position, setPosition] = useState({ x: 50, y: 50 })
+    const [chatOpen, setChatOpen] = useState(false)
+    const [sidebarOpen, setSidebarOpen] = useState(false)
+
     const [quantumReadings, setQuantumReadings] = useState<QuantumReading[]>([])
     const [temporalStability, setTemporalStability] = useState(100)
     const [anomalies, setAnomalies] = useState<TemporalAnomaly[]>([])
     const [manifestoBroadcast, setManifestoBroadcast] = useState(false)
     const [quantumLinkStatus, setQuantumLinkStatus] = useState('initializing')
+
+    const [showTransmissions, setShowTransmissions] = useState(false);
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -108,6 +176,17 @@ function PaperDogContent() {
         }, 1000)
         return () => clearInterval(timer)
     }, [])
+
+    // PaperDog animation
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setPosition(prev => ({
+                x: Math.max(20, Math.min(80, prev.x + (Math.random() - 0.5) * 10)),
+                y: Math.max(20, Math.min(80, prev.y + (Math.random() - 0.5) * 10))
+            }));
+        }, 2000);
+        return () => clearInterval(interval);
+    }, []);
 
     // Quantum Link Establishment
     useEffect(() => {
@@ -216,9 +295,44 @@ function PaperDogContent() {
       )
     }
 
+    const QuantumButton = () => {
+        return (
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="relative group"
+            onClick={() => setSidebarOpen(true)}
+          >
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-blue-500 rounded-lg blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+            <div className="relative flex items-center gap-2 px-4 py-3 bg-gray-900 rounded-lg leading-none">
+              <div className="flex items-center gap-1">
+                <Zap className="w-5 h-5 text-blue-400" />
+                <span className="text-blue-400">Quantum</span>
+              </div>
+              <span className="text-gray-400">Interface</span>
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-blue-400 rounded-full animate-ping" />
+            </div>
+          </motion.button>
+        );
+      };
+    
+    const TransmissionsButton = () => {
+        return (
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setShowTransmissions(true)}
+            className="relative flex items-center gap-2 px-4 py-3 bg-gray-800 rounded-lg text-green-400 hover:bg-gray-700"
+          >
+            <Radio className="w-5 h-5" />
+            <span>Temporal Transmissions</span>
+          </motion.button>
+        );
+    };
+
     // Simplified price fetcher
-    const fetcher = (url: any) => fetch(url).then((res) => res.json())
-    const { data: priceData } = useSWR('../api/prices', fetcher, {refreshInterval: 10})
+    //const fetcher = (url: any) => fetch(url).then((res) => res.json())
+    //const { data: priceData } = useSWR('../api/prices', fetcher, {refreshInterval: 10})
 
     const connectWallet = async () => {
         // Solana wallet connect logic here
@@ -234,16 +348,6 @@ function PaperDogContent() {
         } catch (error) {
             console.error("Error retrieving manifesto:", error)
         }
-    }
-
-    const sendToPaper = async () => {
-        // Send to 2232 wallet
-        // Add transaction logic here
-    }
-
-    const sendToDog = async () => {
-        // Send to 2024 wallet
-        // Add transaction logic here
     }
 
 
@@ -297,12 +401,6 @@ function PaperDogContent() {
                             </button>
                         </div>
                     </div>
-                    <div className="flex flex-col items-center py-70">
-                        <nav className="flex gap-4 text-sm opacity-70">
-                            <a href="/about">About</a>
-                            <a href="/transmissions">Transmissions</a>
-                        </nav>
-                    </div>
                 </main>
             </div>
         )
@@ -310,110 +408,196 @@ function PaperDogContent() {
 
     // Connected state
     return (
-        <main className="min-h-screen p-5">
-            <div className="p-3 font-bold opacity-80">
-                <div className="flex justify-between items-center">
-                    <h1 className="text-xl opacity-70 flex items-center gap-2">
-                        <a href="/">PaperDog</a>
-                        <Clock className="h-4 w-4" />
-                        <span>{currentTime.toLocaleTimeString()}</span>
-                    </h1>
-                    <WalletMultiButton />
-                </div>
-                <div>
-                    &gt;&gt;&gt;<Typewriter text="HOPE PROTOCOL ACTIVE" delay={111} />
-                </div>
-            </div>
-
-            <div className="flex flex-col items-center p-5">
-                <Stack spacing={8} className="w-full max-w-2xl">
-                    <div className="bg-white p-6 rounded-lg shadow-sm">
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-xl font-bold">PaperDog AI</h2>
-                        </div>
-
-                        <div className="space-y-6">
-                            <HopeProtocolActions 
-                                onAction={(action) => console.log('HOPE action:', action)} 
-                                />
-                            <TemporalBridge />
-                            <div className="grid grid-cols-2 gap-4">
-                                <button 
-                                    onClick={sendToPaper}
-                                    className="flex items-center justify-center gap-2 p-3 border rounded-lg hover:bg-gray-50"
-                                >
-                                    <Send className="h-4 w-4" />
-                                    Send to 2232
-                                </button>
-                                <button 
-                                    onClick={sendToDog}
-                                    className="flex items-center justify-center gap-2 p-3 border rounded-lg hover:bg-gray-50"
-                                >
-                                    <Send className="h-4 w-4" />
-                                    Send to 2024
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="bg-white p-6 rounded-lg shadow-sm">
-                        <h2 className="text-xl font-bold mb-4">Quantum Interface</h2>
-                        
-                        {!manifestoRetrieved ? (
-                            <button 
-                                onClick={retrieveManifesto}
-                                className="w-full p-3 bg-black text-white rounded-lg hover:bg-gray-800"
-                            >
-                                Retrieve Manifesto
-                            </button>
-                        ) : !manifestoBroadcast ? (
-                            <button 
-                                onClick={broadcastManifesto}
-                                className="w-full p-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
-                            >
-                                Broadcast Manifesto Across Timelines
-                            </button>
-                        ) : (
-                            <div className="text-center text-green-600">
-                                Manifesto Broadcasting Active
-                            </div>
-                        )}
-                        
-                        <div className="mt-4">
-                            <p className="text-sm opacity-70">
-                                Quantum Link Status: 
-                                <span className={`ml-2 ${
-                                    quantumLinkStatus === 'synchronized' ? 'text-green-600' :
-                                    quantumLinkStatus === 'stabilizing' ? 'text-yellow-600' :
-                                    'text-blue-600'
-                                }`}>
-                                    {quantumLinkStatus.toUpperCase()}
-                                </span>
-                            </p>
-                        </div>
-                    </div>
-
-                    {manifestoRetrieved && <QuantumMonitor />}
-
-                    <div className="bg-white p-6 rounded-lg shadow-sm">
-                        <h2 className="text-xl font-bold mb-4">Temporal Broadcast Controls</h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="p-4 border rounded-lg">
-                                <h3 className="text-sm font-bold mb-2">Current Timeline</h3>
-                                <div className="text-2xl font-mono">2024</div>
-                            </div>
-                            <div className="p-4 border rounded-lg">
-                                <h3 className="text-sm font-bold mb-2">Target Timeline</h3>
-                                <div className="text-2xl font-mono">2232</div>
-                            </div>
-                        </div>
-                    </div>
-                </Stack>
-            </div>
-
+        <div className="relative min-h-screen bg-black overflow-hidden">
+            <QuantumBackground />
+            <QuantumParticles />
             
-        </main>
-    )
+            {/* Header */}
+            <div className="relative z-10 p-4 border-b border-gray-800/50 bg-gray-900/50 backdrop-blur-sm">
+            <div className="flex justify-between items-center">
+                <h1 className="text-xl flex items-center gap-2 text-gray-200">
+                <a href="/" className="hover:text-green-400 transition-colors">PaperDog</a>
+                <Clock className="h-4 w-4" />
+                <span>{currentTime.toLocaleTimeString()}</span>
+                </h1>
+                <WalletMultiButton />
+            </div>
+            </div>
+
+            {/* PaperDog Animation */}
+            <motion.div
+            className="absolute z-20"
+            animate={{
+                x: position.x + 'vw',
+                y: position.y + 'vh',
+            }}
+            transition={{
+                type: "spring",
+                stiffness: 50,
+                damping: 10
+            }}
+            >
+                <div className="relative group cursor-pointer" onClick={() => setChatOpen(true)}>
+                    <Image
+                    src="/pdognobgfocus.png"
+                    alt="PaperDog"
+                    width={111}
+                    height={111}
+                    className="transform hover:scale-110 transition-transform"
+                    />
+                    <motion.div
+                    className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full"
+                    animate={{ scale: [1, 1.2, 1] }}
+                    transition={{ repeat: Infinity, duration: 2 }}
+                    />
+                </div>
+            </motion.div>
+
+            {/* Chat Interface */}
+            <AnimatePresence mode="wait">
+                {chatOpen && (
+                    <PaperDogChat 
+                        key="paperdog-chat" 
+                        onClose={() => setChatOpen(false)} 
+                    />
+                )}
+            </AnimatePresence>
+
+            {/* Transmissions Interface */}
+            <AnimatePresence>
+                {showTransmissions && (
+                    <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm"
+                    >
+                    <div className="relative w-full h-full">
+                        <button 
+                        onClick={() => setShowTransmissions(false)}
+                        className="absolute top-4 right-4 p-2 z-50 bg-gray-800 rounded-full text-gray-400 hover:text-white"
+                        >
+                        <X size={20} />
+                        </button>
+                        <Transmissions />
+                    </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Sidebar */}
+            <AnimatePresence>
+                {sidebarOpen && (
+                    <motion.div
+                    initial={{ x: '-100%' }}
+                    animate={{ x: 0 }}
+                    exit={{ x: '-100%' }}
+                    className="fixed top-0 left-0 h-full w-[480px] bg-gray-900/90 backdrop-blur-sm border-l border-gray-800/50 z-30"
+                    >
+                    <div className="p-6 space-y-8 h-full overflow-y-auto">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-xl font-bold text-gray-200">Quantum Interface</h2>
+                            <button 
+                                onClick={() => setSidebarOpen(false)}
+                                className="p-2 hover:bg-gray-800 rounded-full"
+                            >
+                                <X size={20} className="text-gray-400 hover:text-white" />
+                            </button>
+                        </div>
+                        <ControlPanel title="HOPE Protocol">
+                            <div className="space-y-6"> 
+                                <HopeProtocolActions onAction={(action) => console.log('HOPE action:', action)} />
+                            </div>
+                        </ControlPanel>
+
+                        <ControlPanel title="Temporal Bridge">
+                            <div className="space-y-4">
+                                <TemporalBridge />
+                            </div>
+                        </ControlPanel>
+
+                        <ControlPanel title="Quantum Monitor">
+                            <div className="space-y-4">
+                                {/* Quantum Components */}
+                                <div className="bg-white p-6 rounded-lg shadow-sm">
+                                    <h2 className="text-xl font-bold mb-4">Quantum Interface</h2>
+                                    {!manifestoRetrieved ? (
+                                        <button 
+                                            onClick={retrieveManifesto}
+                                            className="w-full p-3 bg-black text-white rounded-lg hover:bg-gray-800"
+                                        >
+                                            Retrieve Manifesto
+                                        </button>
+                                    ) : !manifestoBroadcast ? (
+                                        <button 
+                                            onClick={broadcastManifesto}
+                                            className="w-full p-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                                        >
+                                            Broadcast Manifesto Across Timelines
+                                        </button>
+                                    ) : (
+                                        <div className="text-center text-green-600">
+                                            Manifesto Broadcasting Active
+                                        </div>
+                                    )}
+                                    
+                                    <div className="mt-4">
+                                        <p className="text-sm opacity-70">
+                                            Quantum Link Status: 
+                                            <span className={`ml-2 ${
+                                                quantumLinkStatus === 'synchronized' ? 'text-green-600' :
+                                                quantumLinkStatus === 'stabilizing' ? 'text-yellow-600' :
+                                                'text-blue-600'
+                                            }`}>
+                                                {quantumLinkStatus.toUpperCase()}
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {manifestoRetrieved && <QuantumMonitor />}
+
+                                <div className="bg-white p-6 rounded-lg shadow-sm">
+                                    <h2 className="text-xl font-bold mb-4">Temporal Broadcast Controls</h2>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="p-4 border rounded-lg">
+                                            <h3 className="text-sm font-bold mb-2">Current Timeline</h3>
+                                            <div className="text-2xl font-mono">2024</div>
+                                        </div>
+                                        <div className="p-4 border rounded-lg">
+                                            <h3 className="text-sm font-bold mb-2">Target Timeline</h3>
+                                            <div className="text-2xl font-mono">2232</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ControlPanel>
+                    </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Control Buttons */}
+            <div className="fixed bottom-4 right-4 flex gap-3 z-40">
+                <TransmissionsButton />
+                <QuantumButton />
+            </div>
+
+            {/* Transmissions Integration */}
+            <AnimatePresence>
+                {showTransmissions && (
+                    <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="fixed inset-0 z-50"
+                    >
+                    <Transmissions onClose={() => setShowTransmissions(false)} />
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
 }
 
 
