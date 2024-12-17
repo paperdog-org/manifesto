@@ -565,9 +565,9 @@ function PaperDogContent() {
                 {chatOpen && (
                     <motion.div
                         initial={{ y: '100%' }}
-                        animate={{ y: '5%' }} // Changed from 0 to push it down a bit
+                        animate={{ y: '5%' }}
                         exit={{ y: '100%' }}
-                        className="fixed inset-x-0 top-0 h-[85vh] md:h-[600px] md:w-[800px] md:left-1/2 md:-translate-x-1/2 md:bottom-4 md:top-auto bg-gray-900/95 rounded-lg border border-gray-700/50 shadow-xl backdrop-blur-sm z-40"
+                        className="fixed inset-x-4 md:right-4 md:left-auto bottom-0 h-[85vh] w-[95%] md:w-[800px] md:h-[600px] bg-gray-900/95 rounded-lg border border-gray-700/50 shadow-xl backdrop-blur-sm z-40"
                     >
                         <PaperDogChat onClose={() => setChatOpen(false)} />
                     </motion.div>
