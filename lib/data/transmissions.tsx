@@ -98,6 +98,18 @@ export const transmissionsData: Chapter[] = [
     ]
   },
   {
+    number: 3,
+    title: "Convergence",
+    transmissions: [
+      {
+        date: "December 16, 2024",
+        time: "6:54 MM",
+        path: "/transmissions/chapter3/121622.json",
+        preview: "Zhe opened his eyes and took in his surroundings..."
+      }
+    ]
+  },
+  {
     number: 8,
     title: "Emergence",
     transmissions: [
