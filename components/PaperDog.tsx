@@ -29,20 +29,86 @@ interface TemporalAnomaly {
   description: string;
 }
 
-interface ChatMessage {
-    id: string;
-    role: 'user' | 'assistant';
-    content: string;
-    timestamp: number;
-  }
+const QuantumActivation = () => {
+    return (
+        <motion.div 
+            className="fixed inset-0 z-50 overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ 
+                opacity: [0, 1, 1, 0],
+                scale: [1, 1.2, 1.5, 2],
+            }}
+            transition={{ 
+                duration: 3,
+                times: [0, 0.3, 0.7, 1],
+            }}
+        >
+            {/* Quantum Ripple */}
+            <div className="absolute inset-0 bg-[#00ffff]/10">
+                <motion.div
+                    className="absolute inset-0"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ 
+                        scale: [0, 1.5, 2],
+                        opacity: [0, 0.7, 0],
+                    }}
+                    transition={{
+                        duration: 2,
+                        ease: "easeOut",
+                        times: [0, 0.5, 1],
+                    }}
+                    style={{
+                        background: 'radial-gradient(circle, rgba(0,255,255,0.4) 0%, rgba(0,255,255,0) 70%)'
+                    }}
+                />
+            </div>
+
+            {/* Quantum Particles */}
+            {Array.from({ length: 50 }).map((_, i) => (
+                <motion.div
+                    key={i}
+                    className="absolute w-1.5 h-1.5 bg-[#00ffff] rounded-full shadow-[0_0_8px_#00ffff,0_0_12px_#00ffff]"
+                    initial={{ 
+                        x: '50vw',
+                        y: '50vh',
+                        opacity: 0
+                    }}
+                    animate={{ 
+                        x: `${Math.random() * 100}vw`,
+                        y: `${Math.random() * 100}vh`,
+                        opacity: [0, 1, 0],
+                    }}
+                    transition={{
+                        duration: 2,
+                        delay: Math.random() * 0.5,
+                        ease: "easeOut"
+                    }}
+                />
+            ))}
+
+            {/* Central Pulse */}
+            <motion.div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                initial={{ scale: 0 }}
+                animate={{ 
+                    scale: [0, 1.5, 0],
+                    opacity: [1, 0.5, 0]
+                }}
+                transition={{ duration: 2 }}
+            >
+                <div className="w-32 h-32 rounded-full bg-[#00ffff]/40 shadow-[0_0_30px_#00ffff,0_0_50px_#00ffff] blur-xl" />
+            </motion.div>
+        </motion.div>
+    );
+};
 
 const QuantumBackground = () => {
     return (
         <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-gray-900 to-black" />
-        <div className="absolute inset-0 opacity-20">
-            <div className="h-full w-full bg-[linear-gradient(to_right,#132a3a_1px,transparent_1px),linear-gradient(to_bottom,#132a3a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
-        </div>
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gray-900 via-gray-900 to-black" />
+            <div className="absolute inset-0 opacity-20">
+                <div className="h-full w-full bg-[linear-gradient(to_right,#132a3a_1px,transparent_1px),linear-gradient(to_bottom,#132a3a_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+            </div>
         </div>
     );
 };
@@ -148,6 +214,7 @@ HopeProtocolActions.displayName = 'HopeProtocolActions';
 
 function PaperDogContent() {
     const [start, setStart] = useState("INITIALIZE")
+    const [showActivation, setShowActivation] = useState(false)
     const { publicKey, connected } = useWallet()
     const [solAddress, setSolAddress] = useState("")
     
@@ -181,8 +248,8 @@ function PaperDogContent() {
     useEffect(() => {
         const interval = setInterval(() => {
             setPosition(prev => ({
-                x: Math.max(20, Math.min(80, prev.x + (Math.random() - 0.5) * 10)),
-                y: Math.max(20, Math.min(80, prev.y + (Math.random() - 0.5) * 10))
+                x: Math.max(10, Math.min(90, prev.x + (Math.random() - 0.5) * 10)), // Adjusted bounds
+                y: Math.max(10, Math.min(70, prev.y + (Math.random() - 0.5) * 10))  // Adjusted bounds
             }));
         }, 2000);
         return () => clearInterval(interval);
@@ -334,9 +401,11 @@ function PaperDogContent() {
     //const fetcher = (url: any) => fetch(url).then((res) => res.json())
     //const { data: priceData } = useSWR('../api/prices', fetcher, {refreshInterval: 10})
 
-    const connectWallet = async () => {
-        // Solana wallet connect logic here
+    const connectBridge = async () => {
+        setShowActivation(true)
+        await new Promise(resolve => setTimeout(resolve, 3000))
         setStart('CONNECTED')
+        setShowActivation(false)
     }
 
     const retrieveManifesto = async () => {
@@ -350,12 +419,48 @@ function PaperDogContent() {
         }
     }
 
+      const customWalletButtonStyle = `
+      .wallet-adapter-button {
+        background: rgba(17, 24, 39, 0.8) !important;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(75, 85, 99, 0.3) !important;
+        color: #4ade80 !important;
+        font-family: monospace !important;
+        height: 40px !important;
+        padding: 0 1.5rem !important;
+        font-size: 0.5rem !important;
+        border-radius: 0.5rem !important;
+        transition: all 0.2s !important;
+      }
+      
+      .wallet-adapter-button:hover {
+        background: rgba(17, 24, 39, 0.95) !important;
+        border-color: #4ade80 !important;
+      }
+      
+      .wallet-adapter-modal-wrapper {
+        background: rgba(17, 24, 39, 0.95) !important;
+        backdrop-filter: blur(8px) !important;
+        border: 1px solid rgba(75, 85, 99, 0.3) !important;
+      }
+      
+      .wallet-adapter-modal-button-close {
+        background: #4ade80 !important;
+      }
+      
+      .wallet-adapter-modal-title {
+        color: #4ade80 !important;
+        font-family: monospace !important;
+      }
+    `;
+
 
     // Initial landing page
     if (start === "INITIALIZE") {
         return (
             <div>
-                <main className="flex min-h-screen flex-col items-center justify-between p-20">
+                <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-20">
+                    {showActivation && <QuantumActivation />}
                     <div className="text-xl opacity-70 flex items-center gap-2">
                         <Clock className="h-4 w-4" />
                         <span>{currentTime.toLocaleTimeString()}</span>
@@ -395,7 +500,7 @@ function PaperDogContent() {
                         <div className="mx-auto mt-6 flex items-center justify-center space-x-5 opacity-90">
                             <button
                                 className="group max-w-fit items-center justify-center space-x-2 rounded-full border border-black bg-black px-7 py-3 text-sm text-white transition-colors hover:bg-white hover:text-black"
-                                onClick={connectWallet}
+                                onClick={connectBridge}
                             >
                                 <b>INITIATE TEMPORAL SEQUENCE</b>
                             </button>
@@ -409,46 +514,48 @@ function PaperDogContent() {
     // Connected state
     return (
         <div className="relative min-h-screen bg-black overflow-hidden">
+            <style jsx global>{customWalletButtonStyle}</style>
             <QuantumBackground />
             <QuantumParticles />
             
             {/* Header */}
             <div className="relative z-10 p-4 border-b border-gray-800/50 bg-gray-900/50 backdrop-blur-sm">
-            <div className="flex justify-between items-center">
-                <h1 className="text-xl flex items-center gap-2 text-gray-200">
-                <a href="/" className="hover:text-green-400 transition-colors">PaperDog</a>
-                <Clock className="h-4 w-4" />
-                <span>{currentTime.toLocaleTimeString()}</span>
-                </h1>
-                <WalletMultiButton />
+                <div className="flex justify-between items-center">
+                    <h1 className="text-xl flex items-center gap-2 text-gray-200">
+                        <a href="/" className="hover:text-green-400 transition-colors">PaperDog</a>
+                        <Clock className="h-4 w-4" />
+                        <span>{currentTime.toLocaleTimeString()}</span>
+                    </h1>
+                    <WalletMultiButton />
+                </div>
             </div>
-            </div>
+
 
             {/* PaperDog Animation */}
             <motion.div
-            className="absolute z-20"
-            animate={{
-                x: position.x + 'vw',
-                y: position.y + 'vh',
-            }}
-            transition={{
-                type: "spring",
-                stiffness: 50,
-                damping: 10
-            }}
+                className="absolute z-20" // Remove "hidden md:block"
+                animate={{
+                    x: position.x + 'vw',
+                    y: position.y + 'vh',
+                }}
+                transition={{
+                    type: "spring",
+                    stiffness: 50,
+                    damping: 10
+                }}
             >
                 <div className="relative group cursor-pointer" onClick={() => setChatOpen(true)}>
                     <Image
-                    src="/pdognobgfocus.png"
-                    alt="PaperDog"
-                    width={111}
-                    height={111}
-                    className="transform hover:scale-110 transition-transform"
+                        src="/pdognobgfocus.png"
+                        alt="PaperDog"
+                        width={111}
+                        height={111}
+                        className="transform hover:scale-110 transition-transform"
                     />
                     <motion.div
-                    className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ repeat: Infinity, duration: 2 }}
+                        className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full"
+                        animate={{ scale: [1, 1.2, 1] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
                     />
                 </div>
             </motion.div>
@@ -456,10 +563,14 @@ function PaperDogContent() {
             {/* Chat Interface */}
             <AnimatePresence mode="wait">
                 {chatOpen && (
-                    <PaperDogChat 
-                        key="paperdog-chat" 
-                        onClose={() => setChatOpen(false)} 
-                    />
+                    <motion.div
+                        initial={{ y: '100%' }}
+                        animate={{ y: '5%' }} // Changed from 0 to push it down a bit
+                        exit={{ y: '100%' }}
+                        className="fixed inset-x-0 top-0 h-[85vh] md:h-[600px] md:w-[800px] md:left-1/2 md:-translate-x-1/2 md:bottom-4 md:top-auto bg-gray-900/95 rounded-lg border border-gray-700/50 shadow-xl backdrop-blur-sm z-40"
+                    >
+                        <PaperDogChat onClose={() => setChatOpen(false)} />
+                    </motion.div>
                 )}
             </AnimatePresence>
 
@@ -467,33 +578,25 @@ function PaperDogContent() {
             <AnimatePresence>
                 {showTransmissions && (
                     <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm"
                     >
-                    <div className="relative w-full h-full">
-                        <button 
-                        onClick={() => setShowTransmissions(false)}
-                        className="absolute top-4 right-4 p-2 z-50 bg-gray-800 rounded-full text-gray-400 hover:text-white"
-                        >
-                        <X size={20} />
-                        </button>
-                        <Transmissions />
-                    </div>
+                        <Transmissions onClose={() => setShowTransmissions(false)} />
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Sidebar */}
+            {/* Quantum Interface Sidebar */}
             <AnimatePresence>
-                {sidebarOpen && (
-                    <motion.div
+            {sidebarOpen && (
+                <motion.div
                     initial={{ x: '-100%' }}
                     animate={{ x: 0 }}
                     exit={{ x: '-100%' }}
-                    className="fixed top-0 left-0 h-full w-[480px] bg-gray-900/90 backdrop-blur-sm border-l border-gray-800/50 z-30"
-                    >
+                    className="fixed top-0 left-0 h-full md:w-[480px] w-full bg-gray-900/90 backdrop-blur-sm border-l border-gray-800/50 z-40" // Same z-index as chat
+                >
                     <div className="p-6 space-y-8 h-full overflow-y-auto">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-xl font-bold text-gray-200">Quantum Interface</h2>
@@ -578,24 +681,10 @@ function PaperDogContent() {
             </AnimatePresence>
 
             {/* Control Buttons */}
-            <div className="fixed bottom-4 right-4 flex gap-3 z-40">
+            <div className="fixed bottom-4 right-4 flex gap-3 z-30 md:flex-row flex-col">
                 <TransmissionsButton />
                 <QuantumButton />
             </div>
-
-            {/* Transmissions Integration */}
-            <AnimatePresence>
-                {showTransmissions && (
-                    <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-50"
-                    >
-                    <Transmissions onClose={() => setShowTransmissions(false)} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </div>
     );
 }

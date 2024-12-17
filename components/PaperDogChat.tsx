@@ -133,115 +133,111 @@ export const PaperDogChat: React.FC<PaperDogChatProps> = ({ onClose }) => {
     };
 
     return (
-        <motion.div
-            initial={{ y: '100%', x: '-50%' }}
-            animate={{ y: 0, x: '-50%' }}
-            exit={{ y: '100%', x: '-50%' }}
-            className="fixed bottom-4 left-1/2 w-[800px] h-[600px] bg-gray-900/95 rounded-lg border border-gray-700/50 shadow-xl backdrop-blur-sm z-40"
-        >
-            <div className="flex flex-col h-full">
-                <div className="flex items-center justify-between p-4 border-b border-gray-800 bg-black/40">
-                    <div className="flex items-center gap-3">
-                        <div className="relative">
-                            <Image
-                                src="/pdognobgfocus.png"
-                                alt="PaperDog"
-                                width={32}
-                                height={32}
-                            />
-                            <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                        </div>
-                        <div>
-                            <h3 className="text-white font-semibold">PaperDog AI</h3>
-                            <div className="text-xs">
-                                <span className="text-green-400">● ONLINE</span>
-                                <span className="text-gray-400 ml-2">2024 Build v1.0</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <motion.span 
-                            className="text-xs text-red-400"
-                            animate={{ opacity: [1, 0.5, 1] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                        >
-                            2232 Temporal Link Disconnected
-                        </motion.span>
-                        <button 
-                            onClick={onClose}
-                            className="p-2 hover:bg-gray-800 rounded-full transition-colors"
-                        >
-                            <X size={20} className="text-gray-400 hover:text-white" />
-                        </button>
-                    </div>
-                </div>
-
-                <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                    {messages.map((msg) => (
-                        <div 
-                            key={msg.id}
-                            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                        >
-                            {msg.role === 'assistant' && (
-                                <div className="w-8 h-8 mr-2 flex-shrink-0">
-                                    <Image
-                                        src="/pdognobgfocus.png"
-                                        alt="PaperDog"
-                                        width={32}
-                                        height={32}
-                                    />
-                                </div>
-                            )}
-                            <motion.div 
-                                className={`max-w-[80%] p-4 rounded-lg ${
-                                    msg.role === 'user'
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-800 font-mono text-green-400'
-                                }`}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.3 }}
-                            >
-                                {msg.content}
-                            </motion.div>
-                        </div>
-                    ))}
-                    {isTyping && (
-                        <div className="flex items-center gap-2 text-green-400 font-mono">
-                            <span className="animate-pulse">Processing quantum request</span>
-                            <motion.div
-                                animate={{ opacity: [0, 1, 0] }}
-                                transition={{ duration: 1.5, repeat: Infinity }}
-                            >
-                                ...
-                            </motion.div>
-                        </div>
-                    )}
-                    <div ref={chatEndRef} />
-                </div>
-
-                <div className="p-4 border-t border-gray-800 bg-black/40">
-                    <div className="flex gap-2">
-                        <input
-                            type="text"
-                            value={inputMessage}
-                            onChange={(e) => setInputMessage(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                            placeholder="Ask me anything about blockchain, quantum mechanics, or the HOPE protocol..."
-                            className="flex-1 p-4 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
+        <div className="flex flex-col h-full w-full overflow-hidden bg-gray-900/95 backdrop-blur-sm">
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-800 bg-black/40">
+                <div className="flex items-center gap-2 md:gap-3">
+                    <div className="relative">
+                        <Image
+                            src="/pdognobgfocus.png"
+                            alt="PaperDog"
+                            width={32}
+                            height={32}
                         />
-                        <button
-                            onClick={handleSendMessage}
-                            className="p-4 bg-green-400 rounded-lg hover:bg-green-500 text-black transition-colors flex items-center gap-2"
-                        >
-                            <Send size={20} />
-                        </button>
+                        <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                     </div>
-                    <div className="mt-2 text-xs text-gray-500 text-center">
-                        Note: Temporal Chat (2232) will be available when quantum stability reaches optimal levels
+                    <div>
+                        <h3 className="text-white font-semibold text-sm md:text-base">PaperDog AI</h3>
+                        <div className="text-[10px] md:text-xs">
+                            <span className="text-green-400">● ONLINE</span>
+                            <span className="text-gray-400 ml-2">2024 Build v1.0</span>
+                        </div>
                     </div>
+                </div>
+                <div className="flex items-center gap-2">
+                    <motion.span 
+                        className="hidden md:inline-block text-xs text-red-400"
+                        animate={{ opacity: [1, 0.5, 1] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                    >
+                        2232 Temporal Link Disconnected
+                    </motion.span>
+                    <button 
+                        onClick={onClose}
+                        className="p-2 hover:bg-gray-800 rounded-full transition-colors"
+                    >
+                        <X size={20} className="text-gray-400 hover:text-white" />
+                    </button>
                 </div>
             </div>
-        </motion.div>
+
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-2 md:p-4 space-y-2 md:space-y-4">
+                {messages.map((msg) => (
+                    <div 
+                        key={msg.id}
+                        className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    >
+                        {msg.role === 'assistant' && (
+                            <div className="w-6 h-6 md:w-8 md:h-8 mr-2 flex-shrink-0">
+                                <Image
+                                    src="/pdognobgfocus.png"
+                                    alt="PaperDog"
+                                    width={32}
+                                    height={32}
+                                />
+                            </div>
+                        )}
+                        <motion.div 
+                            className={`max-w-[85%] p-3 md:p-4 rounded-lg text-sm md:text-base ${
+                                msg.role === 'user'
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-800 font-mono text-green-400'
+                            }`}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            {msg.content}
+                        </motion.div>
+                    </div>
+                ))}
+                {isTyping && (
+                    <div className="flex items-center gap-2 text-green-400 font-mono text-sm md:text-base">
+                        <span className="animate-pulse">Processing quantum request</span>
+                        <motion.div
+                            animate={{ opacity: [0, 1, 0] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                        >
+                            ...
+                        </motion.div>
+                    </div>
+                )}
+                <div ref={chatEndRef} />
+            </div>
+
+            {/* Input area */}
+            <div className="p-2 md:p-4 border-t border-gray-800 bg-black/40">
+                <div className="flex gap-2">
+                    <input
+                        type="text"
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                        placeholder="Ask about quantum mechanics or HOPE..."
+                        className="flex-1 p-3 md:p-4 rounded-lg bg-gray-800 text-white text-sm md:text-base border border-gray-700 focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
+                    />
+                    <button
+                        onClick={handleSendMessage}
+                        className="p-3 md:p-4 bg-green-400 rounded-lg hover:bg-green-500 text-black transition-colors flex items-center gap-2"
+                    >
+                        <Send size={20} />
+                    </button>
+                </div>
+                <div className="mt-2 text-[10px] md:text-xs text-gray-500 text-center px-2">
+                    Note: Temporal Chat (2232) will be available when quantum stability reaches optimal levels
+                </div>
+            </div>
+        </div>
     );
 };
