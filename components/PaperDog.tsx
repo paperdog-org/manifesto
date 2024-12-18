@@ -574,20 +574,6 @@ function PaperDogContent() {
                 )}
             </AnimatePresence>
 
-            {/* Transmissions Interface */}
-            <AnimatePresence>
-                {showTransmissions && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 z-50 bg-black bg-opacity-90 backdrop-blur-sm"
-                    >
-                        <Transmissions onClose={() => setShowTransmissions(false)} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
             {/* Quantum Interface Sidebar */}
             <AnimatePresence>
             {sidebarOpen && (
@@ -682,7 +668,6 @@ function PaperDogContent() {
 
             {/* Control Buttons */}
             <div className="fixed bottom-4 right-4 flex gap-3 z-30 md:flex-row flex-col">
-                <TransmissionsButton />
                 <QuantumButton />
             </div>
         </div>
