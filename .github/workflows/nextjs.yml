@@ -10,9 +10,10 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
+  actions: write
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
@@ -87,40 +88,28 @@ jobs:
 
       - name: Clean artifacts
         run: |
-          find out/ -type l -delete  # Remove symlinks
-          find out/ -type p -delete  # Remove pipes
-          find out/ -type s -delete  # Remove sockets
-          find out/ -name "*.map" -delete  # Remove source maps
-          find out/ -name ".DS_Store" -delete  # Remove macOS system files
-
-          find out/ -name ".*" ! -name ".nojekyll" -exec rm -rf {} +
-          
+          cd out
+          find . -type l -delete  # Remove symbolic links
+          find . -type p -delete  # Remove named pipes
+          find . -type s -delete  # Remove sockets
+          find . -type f -name "*.map" -delete  # Remove source maps
+          find . -type f -name ".DS_Store" -delete  # Remove macOS system files
+          find . -name ".*" ! -name ".nojekyll" -delete
+          cd ..
           echo "Directory contents after cleaning:"
           ls -la out/
           echo "Directory size after cleaning:"
           du -sh out/
 
-      - name: Prepare artifacts for deployment
-        run: |
-          echo "Cleaning up output directory..."
-          cd out
-          find . -type l -delete  # Remove symbolic links
-          find . -type p -delete  # Remove named pipes
-          find . -type s -delete  # Remove sockets
-          cd ..
-          echo "Directory size before compression:"
-          du -sh out/
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: github-pages
-          path: out
-          compression-level: 9  # Maximum compression
-          retention-days: 1
-          if-no-files-found: error
-          overwrite: true
-
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: github-pages
+                path: out
+                compression-level: 9 
+                retention-days: 1
+                if-no-files-found: error
+                overwrite: true
   # Deployment job
   deploy:
     environment:
@@ -134,3 +123,6 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          timeout: 600000
+          clean: true
+          artifact_name: github-pages

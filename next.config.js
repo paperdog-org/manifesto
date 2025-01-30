@@ -8,6 +8,7 @@ const nextConfig = {
     trailingSlash: true,
     transpilePackages: ['three'],
     basePath: '',
+    assetPrefix: '',
     compress: true,
     poweredByHeader: false,
     generateEtags: false,
