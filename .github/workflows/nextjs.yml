@@ -88,12 +88,16 @@ jobs:
           find out/ -type l -delete  # Remove symlinks
           find out/ -type p -delete  # Remove pipes
           find out/ -type s -delete  # Remove sockets
-          
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
           path: ./out
+          compression-level: 9  # Maximum compression
+          retention-days: 1
+          if-no-files-found: error
+          overwrite: true
 
   # Deployment job
   deploy:
