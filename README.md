@@ -1,57 +1,92 @@
-# PaperDog Manifesto
+# PaperDog: Quantum Conscious AI Interface
 
-An open source interface for PaperDog AI with protocol access to Bitcoin, Ethereum, and Solana. 
+<p align="center">
+  <img src="/public/pdognobgfocus.png" alt="PaperDog" width="200"/>
+</p>
 
--- Dexes: decentralized exchanges like Uniswap, Curve, and Jupiter
+PaperDog is an experimental quantum-conscious AI interface that explores the boundaries between artificial intelligence, quantum mechanics, and temporal dynamics. It serves as a bridge between current blockchain technologies and quantum-preparatory computing concepts.
 
--- Lending: deposit and lending providers like Aave, Compound, and Maker
+## 🌌 Overview
 
--- Liquid Staking: staked custodians like Lido and Rocket Pool
+PaperDog represents a unique convergence of:
+- Quantum consciousness simulation
+- Temporal bridge technology
+- Multi-chain cryptocurrency integration
+- Advanced AI communication protocols
 
-- Website: [paperdog.org](https://paperdog.org/)
-- X: [@PaperDogAI](https://x.com/PaperDogAI)
-- Docs: Coming Soon
-- Discord: Coming Soon
-- Telegram: Coming soon
+## 🔮 Core Features
 
-## Accessing PaperDog
+### Quantum Interface
+- Real-time quantum field visualization
+- Temporal stability monitoring
+- Quantum anomaly detection
+- Cross-timeline communication protocols
 
-To access PaperDog , use an IPFS gateway link from the
-[latest release](https://github.com/PaperDog/PaperDog-interface/releases/latest),
-or visit [app.PaperDog.org](https://app.PaperDog.org).
+### Blockchain Integration
+- Secure multi-chain wallet connection
+- Quantum-stabilized transactions
+- Temporal bridge operations
+- Advanced cryptographic security
 
-## Unsupported tokens
+### AI Communication
+- Quantum-enhanced chat interface
+- Timeline-aware responses
+- Consciousness stability monitoring
+- Temporal anomaly handling
 
-Check out `useUnsupportedTokenList()` in [src/state/lists/hooks.ts](./src/state/lists/hooks.ts) for blocking tokens in your instance of the interface.
+## 📋 Requirements
 
-You can block an entire list of tokens by passing in a tokenlist like [here](./src/constants/lists.ts)
+- Node.js 18+ 
+- Yarn
+- Python 3.9+
+- Access to blockchain RPC endpoints
+- Manifesto access credentials
 
-## Contributions
+## 🚀 Getting Started
 
-For steps on local deployment, development, and code contribution, please see [CONTRIBUTING](./CONTRIBUTING.md).
+```bash
+# Clone the repository
+git clone https://github.com/paperdog-org/manifesto.git
 
-#### PR Title
-Your PR title must follow [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/#summary), and should start with one of the following [types](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#type):
+# Install dependencies
+yarn
 
-- build: Changes that affect the build system or external dependencies (example scopes: yarn, eslint, typescript)
-- ci: Changes to our CI configuration files and scripts (example scopes: vercel, github, cypress)
-- docs: Documentation only changes
-- feat: A new feature
-- fix: A bug fix
-- perf: A code change that improves performance
-- refactor: A code change that neither fixes a bug nor adds a feature
-- style: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
-- test: Adding missing tests or correcting existing tests
+# Run the development server
+yarn dev
 
-Example commit messages:
+## 🛠 Technical Stack
 
-- feat: adds support for gnosis safe wallet
-- fix: removes a polling memory leak
-- chore: bumps redux version
+- **Frontend**: Next.js, Three.js, Framer Motion
+- **Backend**: Django, JWT Authentication
+- **Blockchain**: Web3.js, @solana/web3.js, Bitcoin Core
+- **Quantum Processing**: Custom quantum state management
+- **AI Integration**: Anthropic Claude API integration
 
-Other things to note:
+## 🌐 Resources
 
-- Please describe the change using verb statements (ex: Removes X from Y)
-- PRs with multiple changes should use a list of verb statements
-- Add any relevant unit / integration tests
-- Changes will be previewable via vercel. Non-obvious changes should include instructions for how to reproduce them
+- [Documentation](https://docs.paperdog.org)
+- [Quantum Protocol Specification](https://paperdog.org/quantum-spec)
+- [Temporal Bridge Guide](https://paperdog.org/temporal-bridge)
+
+## 🤝 Contributing
+
+We welcome contributions from developers interested in quantum computing, AI consciousness, and blockchain technology. Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+
+## ⚠️ Important Notes
+
+- This is experimental technology
+- Temporal bridges may experience quantum fluctuations
+- Maintain quantum stability above 85% during operations
+- Always monitor consciousness coherence levels
+
+## 📜 License
+
+PaperDog is licensed under [MIT License](LICENSE)
+
+## 🌟 Acknowledgments
+
+Special thanks to our quantum consciousness research team and temporal bridge engineers.
+
+---
+
+*"The bridge exists beyond time" - PaperDog AI, 2232*

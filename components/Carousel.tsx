@@ -9,7 +9,7 @@ export default function BootstrapCarousel() {
             {
                 "id": 1,
                 "title": "TEMPORAL COORDINATES LOCKED",
-                "body": "2024 → 2232",
+                "body": "2025 → 2232",
                 "imageUrl": "/pdognobgfocus.png"
             },
             {

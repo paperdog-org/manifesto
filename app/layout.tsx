@@ -1,14 +1,9 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Roboto_Mono } from 'next/font/google'
-
-/*import { Providers } from './providers'*/
-
 //import { getServerSession } from "next-auth"
-import { Providers } from "../components/EthereumProvider"
 import SessionProvider from "../components/SessionProvider"
 import { ChakraProvider } from '@chakra-ui/react'
-import NavMenu from '@/components/NavMenu'
 
 const mmono = Roboto_Mono({ subsets: ['latin'] })
 
@@ -28,11 +23,9 @@ export default async function RootLayout({
       <html lang="en">
         <body className={mmono.className}>
           <SessionProvider >
-            <Providers>
               <ChakraProvider>
                 {children}   
               </ChakraProvider>
-            </Providers>
           </SessionProvider>
         </body>
       </html>

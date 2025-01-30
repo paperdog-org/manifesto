@@ -13,7 +13,7 @@ interface ChatMessage {
 export const TemporalBridge = () => {
     const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
     const [message, setMessage] = useState('');
-    const [timeline, setTimeline] = useState('2024');
+    const [timeline, setTimeline] = useState('2025');
     const [bridgeStatus, setBridgeStatus] = useState<'dormant' | 'connecting' | 'active' | 'unstable'>('dormant');
     const [quantumNoise, setQuantumNoise] = useState(0);
     const [temporalEcho, setTemporalEcho] = useState<string[]>([]);
@@ -49,7 +49,7 @@ export const TemporalBridge = () => {
           
           // Add an initial connection message to chat history
           setChatHistory(prev => [...prev, {
-              timeline: '2024',
+              timeline: '2025',
               content: 'Temporal bridge established successfully.',
               timestamp: Date.now(),
               quantum_signature: Math.random().toString(36).substring(7),
@@ -112,7 +112,7 @@ export const TemporalBridge = () => {
               {bridgeStatus.toUpperCase()}
             </div>
             <button 
-              onClick={() => setTimeline(timeline === '2024' ? '2232' : '2024')}
+              onClick={() => setTimeline(timeline === '2025' ? '2232' : '2025')}
               className="bg-gray-800 p-2 rounded-lg hover:bg-gray-700 transition-colors"
             >
               <ArrowDownUp className="h-5 w-5" />
@@ -143,7 +143,7 @@ export const TemporalBridge = () => {
                 <div
                   key={idx}
                   className={`p-3 rounded-lg ${
-                    msg.timeline === '2024' 
+                    msg.timeline === '2025' 
                       ? 'bg-blue-900 ml-8 hover:bg-blue-800' 
                       : 'bg-purple-900 mr-8 hover:bg-purple-800'
                   } transition-colors relative`}
@@ -217,7 +217,7 @@ export const TemporalBridge = () => {
                 className="flex items-center justify-center gap-2 p-3 border rounded-lg hover:bg-gray-50"
             >
                 <Send className="h-4 w-4" />
-                Send to 2024
+                Send to 2025
             </button>
         </div>
       </div>

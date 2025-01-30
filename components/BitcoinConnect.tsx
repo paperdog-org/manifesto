@@ -132,7 +132,6 @@ function Bitcoin({address}) {
     const [amount, setAmount] = useState('')
     const [signamessage, setSAM] = useState('')
 
-
     var displayname = currentAddress?.slice(0, 5) + '..' + currentAddress?.slice(-5)
 
     if ( ( !window.btc) ) {
@@ -208,31 +207,6 @@ function Bitcoin({address}) {
                     </div>
                     )
                 }
-            </div>
-            <br />
-            <hr className="dashed w-full opacity-20"></hr>
-            <br />
-            <div className="mx-auto flex justify-center opacity-90">
-                <form
-                    onSubmit={(e) => {
-                    e.preventDefault()
-                    const formData = new FormData(e.target as HTMLFormElement)
-                    const value = formData.get('value') as `${number}`
-                    }}
-                >
-                    <input
-                    type="text"
-                    name="value"
-                    className="text-center form-control block mb-2 w-20 lg:w-full px-2 py-2 font-normal text-white bg-orange-700 bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                    placeholder="AMOUNT"
-                    onChange={(e) => setAmount(e.target.value)}
-                    />
-                    <button type="submit" onClick={stakeBitcoin}>Stake BTC</button>
-                    <br />
-                    <br />
-                    <hr className="dashed w-full opacity-20"></hr>
-                    <br></br>
-                </form>
             </div>
         </div>
     );

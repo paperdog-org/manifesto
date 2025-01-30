@@ -2,36 +2,145 @@
 import { useState, useEffect, useRef } from "react"
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { Send, X } from 'lucide-react'
+import { Send, X, Brain, Bot, Database, Shield, Zap } from 'lucide-react'
 
 interface ChatMessage {
     id: string;
     role: 'user' | 'assistant';
     content: string;
     timestamp: number;
+    metadata?: {
+        quantumStability?: number;
+        timelineOrigin?: string;
+        role?: string;
+    };
+}
+
+interface PaperDogInstance {
+    id: string;
+    name: string;
+    role: 'analyst' | 'guardian' | 'trader' | 'oracle';
+    position: { x: number; y: number };
+    isActive: boolean;
+    metadata?: {
+        specialization?: string;
+        timeline?: string;
+        quantumLevel?: number;
+        permissions?: string[];
+    };
 }
 
 interface PaperDogChatProps {
     onClose: () => void;
+    activeInstance?: PaperDogInstance;
+    onMessage?: (message: ChatMessage) => void;
+    temporalStability: number;
 }
 
-export const PaperDogChat: React.FC<PaperDogChatProps> = ({ onClose }) => {
+export const PaperDogChat: React.FC<PaperDogChatProps> = ({ onClose, activeInstance, onMessage }) => {
     const [inputMessage, setInputMessage] = useState('')
     const [messages, setMessages] = useState<ChatMessage[]>([])
     const [isTyping, setIsTyping] = useState(false)
     const chatEndRef = useRef<HTMLDivElement>(null)
+    const contextLoaded = useRef(false);
 
-    const welcomeMessage = {
-        id: 'welcome',
-        role: 'assistant' as const,
-        content: "*tail wags* Hello! I'm PaperDog AI, your companion across the blockchain. While my 2232 version is still temporally locked, I'm here to help you navigate the quantum realm and explore the HOPE protocol. What would you like to know? *ears perk up curiously*",
-        timestamp: Date.now()
+    const roleConfig = {
+        analyst: {
+            icon: <Brain className="w-4 h-4 text-green-400" />,
+            color: 'green',
+            badge: 'Market Analysis',
+            context: ['quantum data streams', 'market patterns', 'temporal arbitrage']
+        },
+        guardian: {
+            icon: <Shield className="w-4 h-4 text-blue-400" />,
+            color: 'blue',
+            badge: 'Security Protocol',
+            context: ['quantum barriers', 'temporal shields', 'bridge security']
+        },
+        trader: {
+            icon: <Database className="w-4 h-4 text-red-400" />,
+            color: 'red',
+            badge: 'Trade Execution',
+            context: ['order books', 'liquidity pools', 'execution paths']
+        },
+        oracle: {
+            icon: <Bot className="w-4 h-4 text-purple-400" />,
+            color: 'purple',
+            badge: 'Temporal Oracle',
+            context: ['timeline analysis', 'quantum forecasting', 'convergence patterns']
+        }
     };
 
-    const generateQuantumNoise = (baseText: string) => {
+    const getInstanceContext = (instance?: PaperDogInstance) => {
+        if (!instance) return '';
+        
+        const config = roleConfig[instance.role];
+        const specialization = instance.metadata?.specialization || '';
+        const timeline = instance.metadata?.timeline || '2025';
+        
+        return `*initializing ${instance.role} protocols* Loading ${specialization} context from timeline ${timeline}... ${config.context.join(', ')} ready for analysis. Quantum stability at ${instance.metadata?.quantumLevel || 100}%.`;
+    };
+
+    const getWelcomeMessage = (instance?: PaperDogInstance): ChatMessage => ({
+        id: 'welcome',
+        role: 'assistant',
+        content: instance ? 
+            `*tail wags* Greetings! I'm ${instance.name}, your ${instance.role} PaperDog AI instance. ${getInstanceContext(instance)}` :
+            "*tail wags* Hello! I'm PaperDog AI, your companion across the blockchain. While my 2232 version is still temporally locked, I'm here to help you navigate the quantum realm and explore the HOPE protocol. What would you like to know? *ears perk up curiously*",
+        timestamp: Date.now(),
+        metadata: {
+            role: instance?.role,
+            timelineOrigin: instance?.metadata?.timeline || '2025',
+            quantumStability: instance?.metadata?.quantumLevel || 100
+        }
+    });
+
+    const getRoleSpecificResponse = () => {
+        if (!activeInstance) return getQuantumErrorResponse();
+
+        const roleResponses = {
+            analyst: [
+                "*analyzing market patterns* Detecting interesting correlations in the quantum data streams...",
+                "*processing metrics* Current market sentiment indicates potential temporal arbitrage opportunities...",
+            ],
+            guardian: [
+                "*monitoring quantum barriers* All security protocols operating within normal parameters...",
+                "*scanning temporal shields* No unauthorized bridge attempts detected in this timeframe...",
+            ],
+            trader: [
+                "*checking order books* Multiple high-probability trade setups forming across timelines...",
+                "*monitoring liquidity pools* Detecting optimal entry points in the quantum streams...",
+            ],
+            oracle: [
+                "*consulting temporal database* Interesting patterns emerging across multiple timelines...",
+                "*processing quantum data* Timeline convergence suggesting significant events ahead...",
+            ]
+        };
+
+        const responses = roleResponses[activeInstance.role] || roleResponses.oracle;
+        return responses[Math.floor(Math.random() * responses.length)];
+    };
+
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }, [messages]);
+
+    useEffect(() => {
+        if (!contextLoaded.current) {
+            const loadInstanceContext = async () => {
+                setMessages([getWelcomeMessage(activeInstance)]);
+            };
+            loadInstanceContext()
+            contextLoaded.current = true;
+        }
+    }, [activeInstance?.id]);
+
+    const generateQuantumNoise = (baseText: string, stability: number = 100) => {
         const quantumSymbols = '█▓▒░|¦●◉◎⚡☢⚛';
+        const noiseFrequency = (100 - stability) / 100; // More noise when stability is lower
+        
         return baseText.split('').map(char => {
-            if (Math.random() > 0.85) {
+            if (Math.random() > (1 - noiseFrequency)) {
                 return quantumSymbols[Math.floor(Math.random() * quantumSymbols.length)];
             }
             if (Math.random() > 0.95) {
@@ -82,55 +191,56 @@ export const PaperDogChat: React.FC<PaperDogChatProps> = ({ onClose }) => {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
     }, [messages]);
 
-    useEffect(() => {
-        if (messages.length === 0) {
-            setMessages([welcomeMessage]);
-        }
-    }, []);
+    
 
     const handleSendMessage = async () => {
-        if (!inputMessage.trim()) return;
-
-        const newMessage: ChatMessage = {
-            id: Date.now().toString(),
+        if (!inputMessage.trim() || !contextLoaded) return;
+    
+        const userMessage: ChatMessage = {
+            id: `user-${Date.now()}`,
             role: 'user',
             content: inputMessage,
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            metadata: {
+                timelineOrigin: activeInstance?.metadata?.timeline || '2025',
+                quantumStability: activeInstance?.metadata?.quantumLevel
+            }
         };
-
-        setMessages(prev => [...prev, newMessage]);
+    
+        setMessages(prev => [...prev, userMessage]);
+        onMessage?.(userMessage);  // Trigger temporal event
         setInputMessage('');
         setIsTyping(true);
-
+    
         try {
-            // Simulate quantum processing delay
             await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 1200));
-            
-            // Temporarily use quantum error responses
-            setMessages(prev => [...prev, {
-                id: Date.now().toString(),
+    
+            // Create assistant message
+            const response = getRoleSpecificResponse();
+            const assistantMessage: ChatMessage = {
+                id: `assistant-${Date.now()}`, // Ensure unique IDs
                 role: 'assistant',
-                content: getQuantumErrorResponse(),
-                timestamp: Date.now()
-            }]);
-
-            // Add quantum interference effect occasionally
-            if (Math.random() > 0.7) {
-                setTimeout(() => {
-                    setMessages(prev => [...prev, {
-                        id: Date.now().toString(),
-                        role: 'assistant',
-                        content: "*quantum interference detected* ...timeline stabilizing...",
-                        timestamp: Date.now()
-                    }]);
-                }, 500);
-            }
+                content: generateQuantumNoise(response, activeInstance?.metadata?.quantumLevel || 100),
+                timestamp: Date.now(),
+                metadata: {
+                    timelineOrigin: activeInstance?.metadata?.timeline,
+                    quantumStability: activeInstance?.metadata?.quantumLevel
+                }
+            };
+    
+            setMessages(prev => [...prev, assistantMessage]);
+            onMessage?.(assistantMessage);  // Trigger temporal event
+    
         } catch (error) {
             console.error('Quantum communication error:', error);
         } finally {
             setIsTyping(false);
         }
     };
+
+    const roleColor = activeInstance ? 
+        roleConfig[activeInstance.role].color : 
+        'green';
 
     return (
         <div className="flex flex-col h-full w-full overflow-hidden bg-gray-900/95 backdrop-blur-sm">
@@ -140,28 +250,45 @@ export const PaperDogChat: React.FC<PaperDogChatProps> = ({ onClose }) => {
                     <div className="relative">
                         <Image
                             src="/pdognobgfocus.png"
-                            alt="PaperDog"
+                            alt={activeInstance?.name || "PaperDog"}
                             width={32}
                             height={32}
                         />
-                        <div className="absolute -bottom-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                        <div className={`absolute -bottom-1 -right-1 w-2 h-2 bg-${roleColor}-400 rounded-full animate-pulse`} />
                     </div>
                     <div>
-                        <h3 className="text-white font-semibold text-sm md:text-base">PaperDog AI</h3>
-                        <div className="text-[10px] md:text-xs">
-                            <span className="text-green-400">● ONLINE</span>
-                            <span className="text-gray-400 ml-2">2024 Build v1.0</span>
+                        <div className="flex items-center gap-2">
+                            <h3 className="text-white font-semibold text-sm md:text-base">
+                                {activeInstance?.name || "PaperDog AI"}
+                            </h3>
+                            {activeInstance && roleConfig[activeInstance.role].icon}
+                        </div>
+                        <div className="text-[10px] md:text-xs flex items-center gap-2">
+                            <span className={`text-${roleColor}-400`}>● ONLINE</span>
+                            {activeInstance && (
+                                <span className={`px-1.5 py-0.5 rounded-full bg-${roleColor}-400/20 text-${roleColor}-400`}>
+                                    {roleConfig[activeInstance.role].badge}
+                                </span>
+                            )}
+                            <span className="text-gray-400">
+                                Timeline: {activeInstance?.metadata?.timeline || '2025'}
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <motion.span 
-                        className="hidden md:inline-block text-xs text-red-400"
-                        animate={{ opacity: [1, 0.5, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                    >
-                        2232 Temporal Link Disconnected
-                    </motion.span>
+                    {activeInstance?.metadata?.quantumLevel && (
+                        <motion.div 
+                            className="hidden md:flex items-center gap-1 text-xs"
+                            animate={{ opacity: [1, 0.5, 1] }}
+                            transition={{ duration: 2, repeat: Infinity }}
+                        >
+                            <Zap className="w-3 h-3 text-yellow-400" />
+                            <span className="text-yellow-400">
+                                QS: {activeInstance.metadata.quantumLevel}%
+                            </span>
+                        </motion.div>
+                    )}
                     <button 
                         onClick={onClose}
                         className="p-2 hover:bg-gray-800 rounded-full transition-colors"
@@ -192,13 +319,28 @@ export const PaperDogChat: React.FC<PaperDogChatProps> = ({ onClose }) => {
                             className={`max-w-[85%] p-3 md:p-4 rounded-lg text-sm md:text-base ${
                                 msg.role === 'user'
                                     ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-800 font-mono text-green-400'
+                                    : `bg-gray-800 font-mono text-${roleColor}-400`
                             }`}
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3 }}
                         >
                             {msg.content}
+                            {msg.metadata && (
+                                <div className="mt-1 text-[10px] text-gray-500 flex items-center gap-2">
+                                    {msg.metadata.role && (
+                                        <span className={`text-${roleColor}-400`}>
+                                            {msg.metadata.role}
+                                        </span>
+                                    )}
+                                    {msg.metadata.timelineOrigin && (
+                                        <span>TL: {msg.metadata.timelineOrigin}</span>
+                                    )}
+                                    {msg.metadata.quantumStability && (
+                                        <span>QS: {msg.metadata.quantumStability}%</span>
+                                    )}
+                                </div>
+                            )}
                         </motion.div>
                     </div>
                 ))}
@@ -224,18 +366,21 @@ export const PaperDogChat: React.FC<PaperDogChatProps> = ({ onClose }) => {
                         value={inputMessage}
                         onChange={(e) => setInputMessage(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                        placeholder="Ask about quantum mechanics or HOPE..."
+                        placeholder={`Ask ${activeInstance?.name || 'PaperDog'} about ${
+                            activeInstance ? roleConfig[activeInstance.role].context.join(', ') : 'quantum mechanics or HOPE...'
+                        }`}
                         className="flex-1 p-3 md:p-4 rounded-lg bg-gray-800 text-white text-sm md:text-base border border-gray-700 focus:outline-none focus:border-green-400 focus:ring-1 focus:ring-green-400"
+                        disabled={!contextLoaded}
                     />
                     <button
                         onClick={handleSendMessage}
-                        className="p-3 md:p-4 bg-green-400 rounded-lg hover:bg-green-500 text-black transition-colors flex items-center gap-2"
+                        disabled={!contextLoaded}
+                        className={`p-3 md:p-4 rounded-lg text-black transition-colors flex items-center gap-2 ${
+                            contextLoaded ? `bg-${roleColor}-400 hover:bg-${roleColor}-500` : 'bg-gray-600 cursor-not-allowed'
+                        }`}
                     >
                         <Send size={20} />
                     </button>
-                </div>
-                <div className="mt-2 text-[10px] md:text-xs text-gray-500 text-center px-2">
-                    Note: Temporal Chat (2232) will be available when quantum stability reaches optimal levels
                 </div>
             </div>
         </div>
