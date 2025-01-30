@@ -10,7 +10,7 @@ export default async function TermsRoute() {
         <main className="flex min-h-screen flex-col items-center justify-between p-10 font-bold bg-white">
             <div>
                 <h1 className="text-xl opacity-70">
-                    <a href="/">PaperDog</a>
+                    <a href="./">PaperDog</a>
                     <br />
                     &gt;<Typewriter text="Terms of Service" delay={111} />&lt;
                 </h1>

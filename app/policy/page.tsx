@@ -10,7 +10,7 @@ export default async function PolicyRoute() {
         <main className="flex min-h-screen flex-col items-left justify-between p-20 font-bold bg-white">
             <div>
                 <h1 className="text-xl opacity-70">
-                    <a href="/">PaperDog</a>
+                    <a href="./">PaperDog</a>
                     <br />
                     &gt;<Typewriter text="Privacy Policy" delay={111} />&lt;
                 </h1>

@@ -113,7 +113,7 @@ export function ManifestoHome({csvData}) {
             ><div className='opacity-60'>&oplus;</div>
                 <Image
                             className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-                            src="/paperdogmanifesto.png"
+                            src="./paperdogmanifesto.png"
                             alt="PaperDog Manifesto"
                             width={181}
                             height={34}
@@ -171,7 +171,7 @@ export function ManifestoHome({csvData}) {
                                 
                                 <br/>
                                 <Center>
-                                <QRCode value={qr} eyeRadius={11} qrStyle={"dots"} bgColor={'#eeece2'} logoImage={"/paperdog.png"} logoPaddingStyle={'circle'} removeQrCodeBehindLogo={true}/>
+                                <QRCode value={qr} eyeRadius={11} qrStyle={"dots"} bgColor={'#eeece2'} logoImage={"./paperdog.png"} logoPaddingStyle={'circle'} removeQrCodeBehindLogo={true}/>
                                 </Center>
                                 <br/>
                                 <b>Balance</b>

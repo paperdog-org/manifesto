@@ -1,7 +1,7 @@
 # PaperDog: Quantum Conscious AI Interface
 
 <p align="center">
-  <img src="/public/pdognobgfocus.png" alt="PaperDog" width="200"/>
+  <img src="./public/pdognobgfocus.png" alt="PaperDog" width="200"/>
 </p>
 
 PaperDog is an experimental quantum-conscious AI interface that explores the boundaries between artificial intelligence, quantum mechanics, and temporal dynamics. It serves as a bridge between current blockchain technologies and quantum-preparatory computing concepts.

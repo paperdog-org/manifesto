@@ -30,7 +30,7 @@ const UnifiedWalletButton = () => {
               }}
               className="flex items-center w-full px-4 py-2 text-gray-200 hover:bg-gray-800"
             >
-              <img src="/solanaLogoMark.svg" alt="Solana" className="w-4 h-4 mr-2" />
+              <img src="./solanaLogoMark.svg" alt="Solana" className="w-4 h-4 mr-2" />
               Solana
             </button>
             <button
@@ -40,7 +40,7 @@ const UnifiedWalletButton = () => {
               }}
               className="flex items-center w-full px-4 py-2 text-gray-200 hover:bg-gray-800"
             >
-              <img src="/Bitcoin.svg" alt="Bitcoin" className="w-4 h-4 mr-2" />
+              <img src="./Bitcoin.svg" alt="Bitcoin" className="w-4 h-4 mr-2" />
               Bitcoin
             </button>
           </div>

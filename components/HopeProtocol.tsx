@@ -215,7 +215,7 @@ const HopeProtocolComponent: FC = () => {
             <div className='items-center align-center align-middle'>
                 <OneTooltip content="Temporal bridge active">
                     <Image
-                        src="/pdognobgfocus.png"
+                        src="./pdognobgfocus.png"
                         alt="PaperDog Logo"
                         width={111}
                         height={24}

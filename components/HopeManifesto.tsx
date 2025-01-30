@@ -55,7 +55,7 @@ export default function Hope() {
                 <b>PaperDog</b> value can only be determined before closing if there is an earlier commitment to an outcome. In this scenario, <b>PaperDog</b> value would be calculated based on the real and simulated blocks before closing:
                 <br />
                 <Image
-                    src="/divisionofstakes.png"
+                    src="./divisionofstakes.png"
                     alt="Division of Stakes"
                     className="dark:invert"
                     width={1494}

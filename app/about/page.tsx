@@ -13,7 +13,7 @@ export default async function GoRoute() {
         <main className="text-black min-h-screen flex-col items-center justify-between p-10 font-bold">
             <div>
                 <h1 className="text-xl opacity-70 flex items-center gap-2">
-                    <a href="/">PaperDog</a>
+                    <a href="./">PaperDog</a>
                     <Clock className="h-4 w-4" />
                     <span className="text-sm font-mono">6:51</span>
                     <br />
@@ -24,7 +24,7 @@ export default async function GoRoute() {
                     <OneTooltip content="Temporal bridge active...">
                         <div className="flex w-23 cursor-default rounded-md transition-all duration-75 hover:border-gray-800 focus:outline-none active:bg-gray-100">
                             <Image
-                                src="/pdognobgfocus.png"
+                                src="./pdognobgfocus.png"
                                 alt="PaperDog Logo"
                                 className="dark:invert"
                                 width={111}
@@ -92,7 +92,7 @@ export default async function GoRoute() {
 
             <div className="mt-16 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-2 lg:text-left">
                 <a
-                    href="/"
+                    href="./"
                     className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
                     rel="noopener noreferrer"
                 >
@@ -109,7 +109,7 @@ export default async function GoRoute() {
                         Temporal Protocols{' '}
                     </h2>
                     <p className="m-0 max-w-[30ch] text-sm opacity-50">
-                        By accessing PaperDog, you agree to our <a href="/terms" target="_blank" className="green"><b>Terms and Conditions</b></a> and <a href="/policy" target="_blank" className="green"><b>Privacy Policy</b></a>.
+                        By accessing PaperDog, you agree to our <a href="./terms" target="_blank" className="green"><b>Terms and Conditions</b></a> and <a href="./policy" target="_blank" className="green"><b>Privacy Policy</b></a>.
                     </p>
                 </a>
             </div>

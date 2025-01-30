@@ -94,7 +94,7 @@ export function AccountView() {
                                     <div className="flex flex-col items-center justify-between font-bold py-3">
                                         <a
                                             className="group items-center justify-center text-center space-x-2 rounded-full border border-blue bg-black px-9 py-5 text-sm text-white transition-colors hover:bg-white hover:text-black"
-                                            href = "/"
+                                            href = "./"
                                             rel="noopener noreferrer"
                                             >
                                                 START
@@ -169,7 +169,7 @@ export function AccountView() {
                                 <div className="flex flex-col items-center justify-between font-bold py-3">
                                     <a
                                         className="group items-center justify-center text-center space-x-2 rounded-full border border-blue bg-black px-9 py-5 text-sm text-white transition-colors hover:bg-white hover:text-black"
-                                        href = "/"
+                                        href = "./"
                                         rel="noopener noreferrer"
                                         >
                                             START

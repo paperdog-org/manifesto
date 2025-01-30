@@ -25,7 +25,7 @@ function Bitcoin({address}) {
 
     const appDetails = {
         name: "PaperDog",
-        icon: "/pdognobgfocus.png",
+        icon: "./pdognobgfocus.png",
     };
 
 
@@ -195,7 +195,7 @@ function Bitcoin({address}) {
                             >
                         <a className = "group flex max-w-fit items-center">
                         <Image
-                            src="/icon-512x512.png"
+                            src="./icon-512x512.png"
                             alt="Leather Logo"
                             className="dark:invert"
                             width={36}

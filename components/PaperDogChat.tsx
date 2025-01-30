@@ -249,7 +249,7 @@ export const PaperDogChat: React.FC<PaperDogChatProps> = ({ onClose, activeInsta
                 <div className="flex items-center gap-2 md:gap-3">
                     <div className="relative">
                         <Image
-                            src="/pdognobgfocus.png"
+                            src="./pdognobgfocus.png"
                             alt={activeInstance?.name || "PaperDog"}
                             width={32}
                             height={32}
@@ -308,7 +308,7 @@ export const PaperDogChat: React.FC<PaperDogChatProps> = ({ onClose, activeInsta
                         {msg.role === 'assistant' && (
                             <div className="w-6 h-6 md:w-8 md:h-8 mr-2 flex-shrink-0">
                                 <Image
-                                    src="/pdognobgfocus.png"
+                                    src="./pdognobgfocus.png"
                                     alt="PaperDog"
                                     width={32}
                                     height={32}

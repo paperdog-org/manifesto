@@ -26,8 +26,8 @@ const accounts = [
     label: 'Github Account',
     type: 'blackAlpha',
     icon: <Image className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-    src="/github-mark-white.png"
-    alt="/github-mark-black.png"
+    src="./github-mark-white.png"
+    alt="./github-mark-black.png"
     width={7}
     height={7}
     />
@@ -37,7 +37,7 @@ const accounts = [
     label: 'X Account',
     type: 'blackAlpha',
     icon: <Image className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-    src="/x-logo-black.png"
+    src="./x-logo-black.png"
     alt="X logo"
     width={7}
     height={7}
@@ -48,7 +48,7 @@ const accounts = [
     label: 'Telegram Account',
     type: 'blackAlpha',
     icon: <Image className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-    src="/tg-logo-blue.png"
+    src="./tg-logo-blue.png"
     alt="Telegram logo"
     width={7}
     height={7}
@@ -63,7 +63,7 @@ const Footer = () => {
       <Center>
         <Image
             className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-            src="/pdognobgfocus.png"
+            src="./pdognobgfocus.png"
             alt="PaperDog"
             width={20}
         />

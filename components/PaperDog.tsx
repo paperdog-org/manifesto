@@ -135,7 +135,7 @@ const PaperDogInstances = ({ onInstanceClick }) => {
               onClick={() => onInstanceClick(instance)}
             >
               <Image
-                src="/pdognobgfocus.png"
+                src="./pdognobgfocus.png"
                 alt={instance.name}
                 width={120}
                 height={120}
@@ -376,7 +376,7 @@ function PaperDogContent() {
             <div className="relative z-10 p-4 border-b border-gray-800/80 bg-gray-900/90 backdrop-blur-sm">
               <div className="flex justify-between items-center">
                   <h1 className="text-xl flex items-center gap-2 text-gray-200">
-                      <a href="/" className="hover:text-green-400 transition-colors">PaperDog</a>
+                      <a href="./" className="hover:text-green-400 transition-colors">PaperDog</a>
                       <Clock className="h-4 w-4" />
                       <span>{currentTime.toLocaleTimeString()}</span>
                   </h1>

@@ -354,7 +354,7 @@ export const TemporalLanding = ({ onActivationComplete, currentTime, isTemporalT
           >
             <Image
               className="drop-shadow-[0_0_0.3rem_#ffffff70] mx-auto scale-110 md:scale-100"
-              src="/paperdog3.png"
+              src="./paperdog3.png"
               alt="PaperDog Header"
               width={550}
               height={350}
