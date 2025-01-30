@@ -75,6 +75,20 @@ jobs:
           GITHUB_TOKEN_READ_ONLY: ${{ secrets.TOKEN_READ_ONLY }}
       #- name: Static HTML export with Next.js
       #  run: ${{ steps.detect-package-manager.outputs.runner }} next export -o docs
+      - name: List output directory
+        run: |
+          echo "Contents of out directory:"
+          ls -la out/
+          echo "Total size of out directory:"
+          du -sh out/
+
+      # Clean and compress artifacts before upload
+      - name: Clean artifacts
+        run: |
+          find out/ -type l -delete  # Remove symlinks
+          find out/ -type p -delete  # Remove pipes
+          find out/ -type s -delete  # Remove sockets
+          
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
