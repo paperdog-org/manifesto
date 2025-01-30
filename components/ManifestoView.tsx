@@ -50,6 +50,7 @@ export function ManifestoView() {
 
     const addresses = {btcaddress: npIV, ethaddress: npII, soladdress: npIII}
 
+    /*
     const retrieveManifesto = async () => {
         fetch("../api/manifesto")
             .then((res) => res.json())
@@ -71,6 +72,7 @@ export function ManifestoView() {
                 setP2status(res['status']);
             })
     };
+    */
 
     return (
         <div className='py-4'>

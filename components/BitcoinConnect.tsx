@@ -21,13 +21,15 @@ function Bitcoin({address}) {
     const [p2trAddress, setP2TRAddress] = useState("");
     const [stxAddress, setSTXAddress] = useState("");
 
-    const [nonce, setNonce] = useState("");
+    const [nonce, setNonce] = useState("651");
 
     const appDetails = {
         name: "PaperDog",
         icon: "/pdognobgfocus.png",
     };
 
+
+    /** 
     useEffect(() => {
         fetch("../api/nonce")
             .then((res) => res.json())
@@ -37,7 +39,7 @@ function Bitcoin({address}) {
                 )
     }, [])
 
-    /** 
+    
     useEffect(() => {
         if (userSession.isSignInPending()) {
             
@@ -109,7 +111,7 @@ function Bitcoin({address}) {
         });
 
         //update nonce
-        fetch("../api/nonce").then((res) => res.json()).then((res) => (setNonce(res['nonce'])))
+        //fetch("../api/nonce").then((res) => res.json()).then((res) => (setNonce(res['nonce'])))
 
     };
 

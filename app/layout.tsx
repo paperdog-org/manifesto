@@ -2,7 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Roboto_Mono } from 'next/font/google'
 //import { getServerSession } from "next-auth"
-import SessionProvider from "../components/SessionProvider"
+//import SessionProvider from "../components/SessionProvider"
 import { ChakraProvider } from '@chakra-ui/react'
 
 const mmono = Roboto_Mono({ subsets: ['latin'] })
@@ -22,11 +22,11 @@ export default async function RootLayout({
   return (
       <html lang="en">
         <body className={mmono.className}>
-          <SessionProvider >
+
               <ChakraProvider>
                 {children}   
               </ChakraProvider>
-          </SessionProvider>
+
         </body>
       </html>
   )
