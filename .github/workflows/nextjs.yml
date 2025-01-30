@@ -28,15 +28,28 @@ jobs:
         run: yarn install
 
       - name: Build with Next.js
-        run: yarn next build
+        run: |
+          yarn next build
+          touch out/.nojekyll
         env:
           NEXT_PUBLIC_BASE_PATH: ''
+
+      - name: Prepare artifact
+        run: |
+          tar \
+            --dereference --hard-dereference \
+            --directory out \
+            -cvf ${{ runner.temp }}/artifact.tar \
+            --exclude=.git \
+            --exclude=.github \
+            --exclude=".[^/]*" \
+            .
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
-          path: out
+          path: ${{ runner.temp }}/artifact.tar
           if-no-files-found: error
 
   deploy:
