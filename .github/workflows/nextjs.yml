@@ -90,6 +90,15 @@ jobs:
           find out/ -type l -delete  # Remove symlinks
           find out/ -type p -delete  # Remove pipes
           find out/ -type s -delete  # Remove sockets
+          find out/ -name "*.map" -delete  # Remove source maps
+          find out/ -name ".DS_Store" -delete  # Remove macOS system files
+
+          find out/ -name ".*" ! -name ".nojekyll" -exec rm -rf {} +
+          
+          echo "Directory contents after cleaning:"
+          ls -la out/
+          echo "Directory size after cleaning:"
+          du -sh out/
 
       - name: Prepare artifacts for deployment
         run: |

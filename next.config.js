@@ -7,14 +7,21 @@ const nextConfig = {
     images: { unoptimized: true },
     trailingSlash: true,
     transpilePackages: ['three'],
-    basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
-    assetPrefix: process.env.NEXT_PUBLIC_BASE_PATH ? `/${process.env.NEXT_PUBLIC_BASE_PATH}` : '',
+    basePath: '',
+    compress: true,
+    poweredByHeader: false,
+    generateEtags: false,
     webpack: (config, { isServer }) => {
       // Add resolve fallback for "canvas"
       if (!isServer) {
         config.resolve.fallback = {
           ...config.resolve.fallback,
           canvas: false,
+        };
+
+        config.optimization = {
+          ...config.optimization,
+          minimize: true,
         };
       }
       return config;
