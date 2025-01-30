@@ -5,7 +5,7 @@ import { Roboto_Mono } from 'next/font/google'
 //import SessionProvider from "../components/SessionProvider"
 import { ChakraProvider } from '@chakra-ui/react'
 
-const mmono = Roboto_Mono({ subsets: ['latin'] })
+const mmono = Roboto_Mono({ subsets: ['latin'], display: 'swap', })
 
 export const metadata: Metadata = {
   title: 'PaperDog',
