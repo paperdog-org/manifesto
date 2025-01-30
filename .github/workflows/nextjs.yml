@@ -85,12 +85,22 @@ jobs:
           echo "Total size of out directory:"
           du -sh out/
 
-      # Clean and compress artifacts before upload
       - name: Clean artifacts
         run: |
           find out/ -type l -delete  # Remove symlinks
           find out/ -type p -delete  # Remove pipes
           find out/ -type s -delete  # Remove sockets
+
+      - name: Prepare artifacts for deployment
+        run: |
+          echo "Cleaning up output directory..."
+          cd out
+          find . -type l -delete  # Remove symbolic links
+          find . -type p -delete  # Remove named pipes
+          find . -type s -delete  # Remove sockets
+          cd ..
+          echo "Directory size before compression:"
+          du -sh out/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
