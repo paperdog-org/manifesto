@@ -5,6 +5,7 @@ const nextConfig = {
     //output: "standalone", // bulkier but supports dynamic routes & api
     experimental: { esmExternals: true },
     images: { unoptimized: true },
+    assetPrefix: './',
     trailingSlash: true,
     transpilePackages: ['three'],
     webpack: (config, { isServer }) => {

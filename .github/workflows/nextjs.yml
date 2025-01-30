@@ -70,9 +70,12 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: |
+          ${{ steps.detect-package-manager.outputs.runner }} next build
+          touch ./out/.nojekyll
         env:
           GITHUB_TOKEN_READ_ONLY: ${{ secrets.TOKEN_READ_ONLY }}
+          NEXT_PUBLIC_BASE_PATH: ''
       #- name: Static HTML export with Next.js
       #  run: ${{ steps.detect-package-manager.outputs.runner }} next export -o docs
       - name: List output directory
@@ -93,7 +96,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: github-pages
-          path: ./out
+          path: out
           compression-level: 9  # Maximum compression
           retention-days: 1
           if-no-files-found: error
