@@ -1,7 +1,12 @@
-import OneTooltip from '../../components/Tooltip'
+'use client'
 import Image from 'next/image'
 import Typewriter from "../../components/Typewriter"
 import { Clock } from 'lucide-react'
+import dynamic from 'next/dynamic'
+
+const OneTooltip = dynamic(() => import('../../components/Tooltip'), {
+    ssr: false
+  })
 
 export default async function GoRoute() {
     return (
