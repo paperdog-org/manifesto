@@ -1,149 +1,83 @@
 'use client'
-import Image from 'next/image'
+import React, { useState, useEffect } from 'react';
+import { BookOpen, Sparkles } from 'lucide-react';
 
-export default function Hope() {
+const ManifestoButton = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [quantumEffect, setQuantumEffect] = useState(false);
 
-    return (
-        <main className="p-0 flex flex-col justify-between z-10 text-xs md:text-lg text-left">
-            <div>
-                <b>PaperDog</b> is a story about <b>HOPE</b>
-                <br/>
-                <br/>
-                <b>HOPE</b> is a measure of contribution to the shared ethos of <b>PaperDog</b> 
-                <br/>
-                <br/>
-                You can debate amongst yourselves on what <b>HOPE</b> means, but we believe that <b>HOPE</b> is an underlying idea that must be a part of life to be successful. 
-                <br/>
-                <br/>
-                <b>HOPE</b> is both the earliest and most essential virtue inherent to life. It is the one thing that we must have when we have nothing else.
-                <br/>
-                <br/>
-                <b>HOPE</b> pushes people to do unimaginable things.
-                <br/>
-                <br/>
-                <br/>
-                <b>HOPE</b> is the single theme that unites all of our pasts, presents, and futures.
-            </div>
-            <br />
-            <hr className="dashed w-full opacity-80"></hr>
-            <br />
-            <div>
-                Here are the 3 ways <b>HOPE</b> will be available:
-                <br />
-                <br />
-                <br />
-                1. <b>CLAIMING</b>: <b>HOPE</b> claimed at market value
-                <br />
-                2. <b>GIVING</b>: <b>HOPE</b> given at <b>PaperDog</b> value
-                <br />
-                3. <b>SELF-STAKING</b>: <b>HOPE</b> claimed or given at market or <b>PaperDog</b> value respectively
-                <br />
-                <br />
-                <br />
-                <b>HOPE</b> can always be claimed but it can't always be given.
-                <br />
-                <br />
-                The market value of <b>HOPE</b> is 100.
-                <br />
-                <br />
-                <b>PaperDog</b> value is the market value of <b>HOPE</b> when <b>PaperDog</b> last closed.
-                <br />
-                <br />
-                <b>PaperDog</b> closes once every day and night.
-                <br />
-                <br />
-                <b>PaperDog</b> value can only be determined before closing if there is an earlier commitment to an outcome. In this scenario, <b>PaperDog</b> value would be calculated based on the real and simulated blocks before closing:
-                <br />
-                <Image
-                    src="./divisionofstakes.png"
-                    alt="Division of Stakes"
-                    className="dark:invert"
-                    width={1494}
-                    height={144}
-                    priority
-                    />
-            </div>
-            <br />
-            <hr className="dashed w-full opacity-80"></hr>
-            <br />
-            <div>
-                With <b>CLAIMING</b>, <b>HOPE</b> can be claimed at the current market value of <b>HOPE</b>
-                <br />
-                <br />
-                <b>HOPE</b> can be claimed whenever but when <b>HOPE</b> is claimed it is gone forever.
-                <br />
-                <br />
-                So choose when you claim <b>HOPE</b> wisely.
-                <br />
-                <br />
-                How <b>HOPE</b> can be claimed can change. So keep that in mind.
-            </div>
-            <br />
-            <hr className="dashed w-full opacity-80"></hr>
-            <br />
-            <div>
-                With <b>GIVING</b>, <b>HOPE</b> is given at the <b>PaperDog</b> value set at the last closing.
-                <br />
-                <br />
-                When <b>HOPE</b> can be given can change, and it can't always be given.
-            </div>
-            <br />
-            <hr className="dashed w-full opacity-80"></hr>
-            <br />
-            <div>
-                With <b>SELF-STAKING</b>, <b>HOPE</b> can either be claimed or given.
-                <br />
-                <br />
-                <b>HOPE</b> is accrued for each block that a token is held by a <b>PaperDog</b>. 
-                <br />
-                <br />
-                <b>HOPE</b>, in this context, is a measure of your <b>PaperDog</b> participation equal to the time-integrated held <b>HOPE</b> units of BTC/ETH/SOL ⋅ hours.
-                <br />
-                <br />
-                A <b>HOPE</b> unit is equivalent to 0.01 BTC, 0.1 ETH, and 1 SOL per day or night held. 
-                <br />
-                <br />
-                There is a 2x multiplier for every 40 full day and nights held
-                <br />
-                <br />
-                There is also a bonus of 100 <b>HOPE</b> for every full day and night held. 
-                <br />
-                <br />
-                For example, a <b>PaperDog</b> who self-stakes 0.1 BTC, 1 ETH, and 10 SOL for a full 40 days and 40 nights would accrue 100000 <b>HOPE</b> over this time period:
-                <br />
-                <br />
-                    <div className = 'text-center text-bold'><b>
-                        (10 BTC units x 10 ETH units x 10 SOL units × 40 days × 40 nights x 2) = 96000 <b>HOPE</b>
-                        <br />
-                        + 
-                        <br />
-                        (100 HOPE x 40 full day and night) = 4000 HOPE
-                        <br />
-                        <br />
-                        TOTAL = 100000 <b>HOPE</b>
-                    </b></div>
-                <br />
-                <br />
-                Now, that's real <b>HOPE</b>
-            </div>
-            <br />
-            <hr className="dashed w-full opacity-80"></hr>
-            <br />
-            <div>
-                You may think that claiming <b>HOPE</b> has more benefits.
-                <br />
-                <br />
-                But, we believe that giving <b>HOPE</b> is infinitely more powerful. 
-                <br />
-                <br />
-                <b>HOPE</b> given can make all of our dreams come true.
-            </div>
-            <br />
-            <hr className="dashed w-full opacity-80"></hr>
-            <br />
+  // Create quantum "glitch" effect periodically
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setQuantumEffect(true);
+      setTimeout(() => setQuantumEffect(false), 150);
+    }, 3000);
 
-            <b>We HOPE</b>
+    return () => clearInterval(interval);
+  }, []);
 
-        </main>
-    )
-}
+  return (
+    <div className="relative">
+      {/* Quantum Background Effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-green-500/20 blur-xl opacity-0 transition-all duration-500" />
+      
+      {/* Main Button */}
+      <button
+        onClick={() => window.open('/PaperDog.pdf', '_blank')}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className={`
+          relative px-6 py-3 
+          bg-white/20 backdrop-blur-sm
+          border border-blue-500/30
+          rounded-lg overflow-hidden
+          group transition-all duration-300
+          hover:border-green-400/50
+          ${quantumEffect ? 'translate-x-[1px] scale-[1.02]' : ''}
+        `}
+      >
+        {/* Animated Gradient Border */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-green-400/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+        {/* Content Container */}
+        <div className="relative flex items-center gap-3 text-gray-100">
+          <BookOpen className={`w-5 h-5 transition-all duration-300 ${isHovered ? 'text-green-400' : 'text-blue-400'}`} />
+          
+          <h1 className="text-2xl md:text-3xl lg:text-5xl font-bold bg-gradient-to-br from-black/80 to-blue-300 bg-clip-text text-transparent">
+              THE•HOPE•MANIFESTO
+            </h1>
+          
+          <Sparkles className={`w-4 h-4 transition-all duration-300 ${isHovered ? 'text-green-400 rotate-12' : 'text-blue-400'}`} />
+        </div>
+
+        {/* Quantum Particles */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className={`
+                absolute w-1 h-1 bg-blue-400/60
+                rounded-full transition-all duration-1000
+                ${isHovered ? 'animate-ping' : ''}
+              `}
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${i * 200}ms`
+              }}
+            />
+          ))}
+        </div>
+      </button>
+
+      {/* Temporal Echo Effect */}
+      {isHovered && (
+        <div className="absolute inset-0 -z-10 animate-pulse">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-green-500/10 blur-xl" />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ManifestoButton;

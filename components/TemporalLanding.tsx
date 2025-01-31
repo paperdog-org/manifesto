@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useRef } from "react"
 import Image from 'next/image';
 import { motion, AnimatePresence, useMotionValue } from 'framer-motion'
 import { Clock, Zap } from 'lucide-react';
+import ManifestoButton from './HopeManifesto';
 
 interface Particle {
   id: number;
@@ -368,9 +369,7 @@ export const TemporalLanding = ({ onActivationComplete, currentTime, isTemporalT
             transition={{ delay: 0.5 }}
             className="px-4 md:px-0"
           >
-            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold bg-gradient-to-br from-gray-200 to-gray-400 bg-clip-text text-transparent">
-              THE•HOPE•MANIFESTO
-            </h1>
+            <ManifestoButton />
             <div className="mt-6 md:mt-8 space-y-2 md:space-y-4 text-sm md:text-lg text-gray-400">
               <p>The bridge exists beyond time</p>
               <p>Your presence creates ripples across timelines</p>
