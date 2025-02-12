@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { AlertTriangle, Radio, Zap, Shield, Cpu, Binary, Wifi, Power } from 'lucide-react';
+import { AlertTriangle, Radio, Zap, Shield, Cpu, Binary, Wifi, Power, X } from 'lucide-react';
 
 const QuantumAnomaly = ({ onClose }) => {
   const [showAlternateMessage, setShowAlternateMessage] = useState(false);
   const [glitchEffect, setGlitchEffect] = useState(false);
   const [dataStreamActive, setDataStreamActive] = useState(true);
+  const [closeButtonHovered, setCloseButtonHovered] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -206,6 +207,77 @@ const QuantumAnomaly = ({ onClose }) => {
     </div>
   );
 
+  const QuantumCloseButton = () => (
+    <motion.button
+      className="absolute top-4 right-4 z-50"
+      onClick={() => {
+        setDataStreamActive(false);
+        setTimeout(onClose, 500);
+      }}
+      onMouseEnter={() => setCloseButtonHovered(true)}
+      onMouseLeave={() => setCloseButtonHovered(false)}
+      whileHover={{ scale: 1.1 }}
+    >
+      <div className="relative">
+        {/* Quantum particle effect */}
+        <AnimatePresence>
+          {closeButtonHovered && (
+            <motion.div
+              className="absolute -inset-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {[...Array(8)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute w-1 h-1 bg-red-500 rounded-full"
+                  animate={{
+                    x: [0, (Math.random() - 0.5) * 30],
+                    y: [0, (Math.random() - 0.5) * 30],
+                    opacity: [1, 0],
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    delay: i * 0.1,
+                  }}
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        {/* Main close button */}
+        <motion.div
+          className="relative flex items-center justify-center w-8 h-8 rounded-full bg-red-500/20 border border-red-500/50"
+          animate={{
+            boxShadow: closeButtonHovered 
+              ? ['0 0 10px rgba(255,0,0,0.5)', '0 0 20px rgba(255,0,0,0.3)', '0 0 10px rgba(255,0,0,0.5)']
+              : 'none'
+          }}
+          transition={{ duration: 1, repeat: Infinity }}
+        >
+          <X className="w-4 h-4 text-red-500" />
+          
+          {/* Quantum ring effect */}
+          <motion.div
+            className="absolute inset-0 rounded-full border border-red-500/30"
+            animate={{
+              scale: closeButtonHovered ? [1, 1.5] : 1,
+              opacity: closeButtonHovered ? [1, 0] : 1,
+            }}
+            transition={{
+              duration: 1,
+              repeat: Infinity,
+            }}
+          />
+        </motion.div>
+      </div>
+    </motion.button>
+  );
+
   return (
     <div className="fixed inset-0 z-50">
       {/* Backdrop */}
@@ -214,6 +286,8 @@ const QuantumAnomaly = ({ onClose }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       />
+
+      <QuantumCloseButton />
 
       {/* Data Stream Effect */}
       {dataStreamActive && <DataStream />}
